@@ -1,0 +1,12 @@
+Index: prego/prego/const.py
+===================================================================
+--- prego.orig/prego/const.py
++++ prego/prego/const.py
+@@ -18,7 +18,6 @@ INDENTST = 9 * ' '
+ IDENTIFIERS = string.ascii_uppercase + string.ascii_lowercase
+ 
+ config_path = [
+-    '.',
+     '/usr/share/lib/prego',        # debian
+     '/share/lib/prego',            # virtualenv
+     '/usr/local/share/lib/prego']  # pip

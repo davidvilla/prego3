@@ -1,0 +1,2 @@
+- Set unexisting cwd in commands as ERROR.
+- $testdir should be default cwd.

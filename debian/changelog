@@ -1,0 +1,175 @@
+prego3 (0.20181024-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Wed, 24 Oct 2018 11:55:53 +0200
+
+prego3 (0.20181019-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Fri, 19 Oct 2018 11:53:36 +0200
+
+prego3 (0.20180927.1-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 27 Sep 2018 10:55:39 +0200
+
+prego3 (0.20180927-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 27 Sep 2018 10:37:06 +0200
+
+prego3 (0.20180925-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 25 Sep 2018 22:04:36 +0200
+
+prego3 (0.20180918-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 18 Sep 2018 13:27:13 +0200
+
+prego3 (0.20170123-1) unstable; urgency=low
+
+  * New release
+  * updating package, prego command and config
+
+ -- David Villa Alises <David.Villa@gmail.com>  Mon, 23 Jan 2017 00:35:01 +0100
+
+prego3 (0.20150306-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Fri, 06 Mar 2015 14:50:57 +0100
+
+prego3 (0.20150115-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 15 Jan 2015 12:20:21 +0100
+
+prego3 (0.20141211-1) unstable; urgency=low
+
+  * New release
+  * setup.py install_requires fixed
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 11 Dec 2014 13:33:00 +0100
+
+prego3 (0.20131113-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Wed, 13 Nov 2013 11:45:55 +0100
+
+prego3 (0.20130912-1) unstable; urgency=low
+
+  * using new commodity
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 12 Sep 2013 00:06:38 +0200
+
+prego3 (0.20130716-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 16 Jul 2013 00:02:31 +0200
+
+prego3 (0.20130702-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 02 Jul 2013 23:23:05 +0200
+
+prego3 (0.20130701-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Mon, 01 Jul 2013 16:43:30 +0200
+
+prego3 (0.20130516.1-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 16 May 2013 19:24:12 +0200
+
+prego3 (0.20130516-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 16 May 2013 18:03:34 +0200
+
+prego3 (0.20130429-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Mon, 29 Apr 2013 11:42:29 +0200
+
+prego3 (0.20130427-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Sat, 27 Apr 2013 00:18:44 +0200
+
+prego3 (0.20130426-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Fri, 26 Apr 2013 10:14:56 +0200
+
+prego3 (0.20130425-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 25 Apr 2013 22:34:32 +0200
+
+prego3 (0.20130419.1-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Fri, 19 Apr 2013 19:35:55 +0200
+
+prego3 (0.20130218.1-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Mon, 18 Feb 2013 13:38:46 +0100
+
+prego3 (0.20130218-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Mon, 18 Feb 2013 13:06:00 +0100
+
+prego3 (0.20130116-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Wed, 16 Jan 2013 14:21:33 +0100
+
+prego3 (0.20130115-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 15 Jan 2013 14:38:07 +0100
+
+prego3 (0.20130111-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Fri, 11 Jan 2013 15:35:55 +0100
+
+prego3 (0.20130110-1) unstable; urgency=low
+
+  * New release
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 10 Jan 2013 01:06:08 +0100
+
+prego3 (0.20121211-1) unstable; urgency=low
+
+  * Initial release (Closes #)
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 11 Dec 2012 21:25:08 +0100
