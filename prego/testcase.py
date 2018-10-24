@@ -1,11 +1,10 @@
-#!/usr/bin/python
 # -*- coding:utf-8; tab-width:4; mode:python -*-
 
 import sys
 import logging
 import warnings
 import unittest
-# from unittest.case import _ExpectedFailure, _UnexpectedSuccess, SkipTest
+import contextlib
 from commodity.path import child_relpath
 
 from .runner import init, Runner
@@ -44,105 +43,6 @@ class PregoTestCase(object):
             init()
 
 
-class TestCaseOld(unittest.TestCase):
-    def run(self, result=None):
-        raised_exc = None
-        orig_result = result
-        if result is None:
-            result = self.defaultTestResult()
-            startTestRun = getattr(result, 'startTestRun', None)
-            if startTestRun is not None:
-                startTestRun()
-
-        self._resultForDoCleanups = result
-        result.startTest(self)
-
-        testMethod = getattr(self, self._testMethodName)
-        if (getattr(self.__class__, "__unittest_skip__", False)
-            or getattr(testMethod, "__unittest_skip__", False)):
-            # If the class or method was skipped.
-            try:
-                skip_why = (getattr(self.__class__, '__unittest_skip_why__', '')
-                            or getattr(testMethod, '__unittest_skip_why__', ''))
-                self._addSkip(result, skip_why)
-            finally:
-                result.stopTest(self)
-            return
-
-        if Runner.shutdown:
-            self._addSkip(result, 'user break')
-            result.stopTest(self)
-            return
-
-        try:
-            success = False
-            try:
-                gvars.testpath = testpath = testMethod.__code__.co_filename
-                prego_case = PregoTestCase(self, self._testMethodName, testpath)
-                self.setUp()
-            except SkipTest as e:
-                self._addSkip(result, str(e))
-            except KeyboardInterrupt:
-                raise
-            except:
-                result.addError(self, sys.exc_info())
-            else:
-                try:
-                    testMethod()
-                    prego_case.commit()
-                except KeyboardInterrupt:
-                    raise
-                except self.failureException:
-                    exc_info = list(sys.exc_info())
-                    if exc_info[0] == TestFailed:
-                        exc_info[2] = None  # remove traceback
-                    result.addFailure(self, exc_info)
-                except _ExpectedFailure as e:
-                    addExpectedFailure = getattr(result, 'addExpectedFailure', None)
-                    if addExpectedFailure is not None:
-                        addExpectedFailure(self, e.exc_info)
-                    else:
-                        warnings.warn("TestResult has no addExpectedFailure method, reporting as passes",
-                                      RuntimeWarning)
-                        result.addSuccess(self)
-                except _UnexpectedSuccess:
-                    addUnexpectedSuccess = getattr(result, 'addUnexpectedSuccess', None)
-                    if addUnexpectedSuccess is not None:
-                        addUnexpectedSuccess(self)
-                    else:
-                        warnings.warn("TestResult has no addUnexpectedSuccess method, reporting as failures",
-                                      RuntimeWarning)
-                        result.addFailure(self, sys.exc_info())
-                except SkipTest as e:
-                    self._addSkip(result, str(e))
-                except Exception as e:
-                    raised_exc = e
-                    result.addError(self, sys.exc_info())
-
-                else:
-                    success = True
-                try:
-                    self.tearDown()
-#                    if not raised_exc:
-#                        prego_case.commit()
-                except KeyboardInterrupt:
-                    raise
-                except:
-                    result.addError(self, sys.exc_info())
-                    success = False
-
-            cleanUpSuccess = self.doCleanups()
-            success = success and cleanUpSuccess
-            if success:
-                result.addSuccess(self)
-        finally:
-            result.stopTest(self)
-            if orig_result is None:
-                stopTestRun = getattr(result, 'stopTestRun', None)
-                if stopTestRun is not None:
-                    stopTestRun()
-
-
 class TestCase(unittest.TestCase):
     def run(self, result=None):
         orig_result = result
@@ -175,11 +75,14 @@ class TestCase(unittest.TestCase):
             self._outcome = outcome
 
             with outcome.testPartExecutor(self):
+                gvars.testpath = testpath = testMethod.__code__.co_filename
+                prego_case = PregoTestCase(self, self._testMethodName, testpath)
                 self.setUp()
             if outcome.success:
                 outcome.expecting_failure = expecting_failure
                 with outcome.testPartExecutor(self, isTest=True):
                     testMethod()
+                    prego_case.commit()
                 outcome.expecting_failure = False
                 with outcome.testPartExecutor(self):
                     self.tearDown()
@@ -212,3 +115,47 @@ class TestCase(unittest.TestCase):
 
             # clear the outcome, no more needed
             self._outcome = None
+
+
+# patched unittest.case._Outcome
+class _Outcome(object):
+    def __init__(self, result=None):
+        self.expecting_failure = False
+        self.result = result
+        self.result_supports_subtests = hasattr(result, "addSubTest")
+        self.success = True
+        self.skipped = []
+        self.expectedFailure = None
+        self.errors = []
+
+    @contextlib.contextmanager
+    def testPartExecutor(self, test_case, isTest=False):
+        old_success = self.success
+        self.success = True
+        try:
+            yield
+        except KeyboardInterrupt:
+            raise
+        except unittest.case.SkipTest as e:
+            self.success = False
+            self.skipped.append((test_case, str(e)))
+        except unittest.case._ShouldStop:
+            pass
+        except:
+            exc_info = list(sys.exc_info())
+            if exc_info[0] == TestFailed:
+                exc_info[2] = None  # remove traceback
+
+            if self.expecting_failure:
+                self.expectedFailure = exc_info
+            else:
+                self.success = False
+                self.errors.append((test_case, exc_info))
+            # explicitly break a reference cycle:
+            # exc_info -> frame -> exc_info
+            exc_info = None
+        else:
+            if self.result_supports_subtests and self.success:
+                self.errors.append((test_case, None))
+        finally:
+            self.success = self.success and old_success

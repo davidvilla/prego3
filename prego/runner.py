@@ -80,10 +80,10 @@ def commit(logger=None):
     try:
         Runner(gvars.tasks).run()
         result = Status.OK
-    except TestFailed as test_failed:
+    except TestFailed as test_failure:
         result = Status.FAIL
-        # srink trackeback
-        raise test_failed
+        # shrink trackeback
+        raise test_failure
     except:
         result = Status.ERROR
         raise

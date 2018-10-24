@@ -162,9 +162,9 @@ class Task(Printable):
     def task_start(self):
         self.tinit = time.time()
         detach_advice = ' [DETACHED]' if self.detach else ''
-        msg = u'$status   %s$name   Task starts%s: %s%s' % (
+        msg = '$status   %s$name   Task starts%s: %s%s' % (
             term().bold, detach_advice, self.desc, term().normal)
-        self.log.debug(msg.encode('utf-8', 'ignore'))
+        self.log.debug(msg)
         self.status = Status.UNKNOWN
 
     def assert_that(self, actual, matcher=None, reason=''):

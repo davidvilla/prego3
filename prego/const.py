@@ -18,7 +18,7 @@ INDENTST = 9 * ' '
 IDENTIFIERS = string.ascii_uppercase + string.ascii_lowercase
 
 config_path = [
-    '.',                           # pwd
+    '.',
     '/usr/share/lib/prego',        # debian
     '/share/lib/prego',            # virtualenv
     '/usr/local/share/lib/prego']  # pip

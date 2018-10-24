@@ -3,22 +3,24 @@
 import os
 from signal import SIGTERM
 import time
-
-NoneType = type(None)
+from functools import partial
+import io
 
 import hamcrest
 
 from commodity.type_ import checked_type
-from commodity.os_ import SubProcess, FileTee, FuncAsFile
+from commodity.os_ import SubProcess, FileTee, FuncAsTextFile
 from commodity.log import PrefixLogger
 
 from .assertion import Assertion, Matcher
-from .tools import create_file, create_logger, Interpolator
+from .tools import create_file, create_logger, Interpolator, file_types
 from .const import PREGO_TMP, AUTO, INDENTST
 from .item import File, DeferredAttr
 from . import config
 from . import gvars
 from .const import Status, term
+
+NoneType = type(None)
 
 
 DEFAULT = '__DEFAULT__'
@@ -108,10 +110,10 @@ class Command(Assertion):
             out = os.path.join(PREGO_TMP, '%s.%s' % (self.name, outname))
 
         if isinstance(out, str):
-            out = create_file(out, 'w', 0)
+            out = create_file(out, 'wb', 0)
 
-        if isinstance(out, file):
-            assert out.mode == 'w', "%s must be writable" % out.name
+        if isinstance(out, file_types):
+            assert out.writable(), "%s must be writable" % out.name
             out = File.from_fd(out)
 
         setattr(self, "_std%s" % outname, out)
@@ -146,9 +148,10 @@ class Command(Assertion):
 
             out_logger_name = '{0}.{1}'.format(self.name, suffix)
             out_logger = create_logger(out_logger_name)
-            prefix = "%s%s| " % (9 * ' ', out_logger.name)
-            return FileTee(out,
-                           FuncAsFile(out_logger.info, prefix))
+            prefix = '%s%s| ' % (9 * ' ', out_logger.name)
+            return FileTee(
+                out, to_textfile_wrapper(
+                    FuncAsTextFile(out_logger.info, prefix)))
 
         stdout = decorate_out_with_logger(self._stdout, 'out', config.stdout)
         stderr = decorate_out_with_logger(self._stderr, 'err', config.stderr)
@@ -298,3 +301,21 @@ class RanForTime(Matcher):
 
 def ran_for_time(secs):
     return RanForTime(secs)
+
+
+class to_textfile_wrapper:
+    def __init__(self, fd):
+        self.fd = fd
+
+    def write(self, data):
+        self.fd.write(data.decode(errors='ignore'))
+
+    def flush(self):
+        pass
+
+    @property
+    def closed(self):
+        return self.fd.closed
+
+    def close(self):
+        pass

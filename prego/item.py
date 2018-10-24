@@ -6,6 +6,7 @@ import filecmp
 from commodity.type_ import checked_type
 from commodity.str_ import Printable
 
+from .tools import file_types
 from .tools import Interpolator
 
 
@@ -33,18 +34,18 @@ class DeferredAttr(DeferredItem):
 
 
 class DeferredContent(DeferredItem):
-    def __init__(self, out):
+    def __init__(self, fd):
         super(DeferredContent, self).__init__()
-        self.out = out
+        self.fd = fd
 
     def resolve(self):
         try:
-            return self.out.read()
+            return self.fd.read()
         except IOError:
             return None
 
     def __str__(self):
-        return "{0} has".format(self.out)
+        return "{0} has".format(self.fd)
 
 
 class File(Printable):
@@ -52,21 +53,22 @@ class File(Printable):
         self.path = Interpolator().apply(checked_type(str, path))
         self.fd = fd
 
-    def __cmp__(self, other):
-        return not filecmp.cmp(self.path, other.path)
+    def __eq__(self, other):
+        return filecmp.cmp(self.path, other.path)
 
     @classmethod
     def from_fd(cls, fd):
-        fd = checked_type(file, fd)
+        "Creates prego.File from standard python file descriptor"
+        fd = checked_type(file_types, fd)
         assert not fd.closed, fd
         return File(fd.name, fd)
 
     def read(self):
-        with file(self.path) as fd:
+        with open(self.path) as fd:
             return fd.read()
 
     def readline(self):
-        with file(self.path) as fd:
+        with open(self.path) as fd:
             return fd.readline()
 
     def write(self, data):
@@ -106,5 +108,5 @@ class File(Printable):
     def content(self):
         return DeferredContent(self)
 
-    def __unicode__(self):
-        return u"File {0!r}".format(self.path)
+    def __str__(self):
+        return "File {0!r}".format(self.path)

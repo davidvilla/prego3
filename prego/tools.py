@@ -9,12 +9,18 @@ import logging
 import configobj
 import validate
 import six
+import io
 
 from commodity.log import CapitalLoggingFormatter
 from commodity.pattern import Bunch
 
 from . import gvars
 from .const import PREGO_TMP_BASE, PREGO_TMP, term, PREGO_SPECS
+
+if six.PY2:
+    file_types = file, io.IOBase
+else:
+    file_types = (io.IOBase,)
 
 basedir = os.getcwd()
 
@@ -57,7 +63,7 @@ def create_file(fpath, *args):
         except OSError:
             pass
 
-    return file(fpath, *args)
+    return open(fpath, *args)
 
 
 class PregoStreamHandler(logging.StreamHandler):
@@ -99,10 +105,6 @@ class StatusFilter(logging.Filter):
         except AttributeError:
             pass
 
-        print(repr(values))
-        print(type(values['name']))
-        print(type(values['status']))
-        msg.safe_substitute(values)
         record.msg = "{0}{1}".format(msg.safe_substitute(values), str(term().normal))
         return True
 
@@ -126,3 +128,10 @@ def set_testpath():
     for frame in it:
         if frame[3] == 'testMethod()':
             gvars.testpath = six.next(it)[0]
+
+
+def to_text(e):
+    try:
+        return str(e)
+    except UnicodeDecodeError:
+        return repr(e)

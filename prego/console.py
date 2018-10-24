@@ -63,7 +63,7 @@ class MyMemoryHandler(Handler):
 
 # if isinstance(logcapture.MyMemoryHandler, BufferingHandler):
 logcapture.MyMemoryHandler = MyMemoryHandler
-logcapture.LogCapture.logformat = '[%(levelcapital)s] %(message)s'
+logcapture.LogCapture.logformat = '%(levelcapital)s. %(message)s'
 logcapture.clear = True
 
 

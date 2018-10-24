@@ -21,8 +21,6 @@ import sys
 from distutils.core import setup
 from setuptools import find_packages
 
-print("@@@@@@@@@@@@@@@@@@@ ", sys.version_info)
-
 exec(open('version.py').read())
 
 config = dict(

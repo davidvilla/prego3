@@ -15,7 +15,7 @@ from .const import Status, term, INDENTST
 from .exc import PregoAssertionFailed, PregoAssertionError, log_traceback
 from .item import DeferredItem
 #from .assert_that import assert_that
-from .tools import create_logger, StatusFilter
+from .tools import create_logger, StatusFilter, to_text
 
 
 #-- assertions
@@ -111,19 +111,13 @@ class DeferredAssertion(Assertion):
             assert_that(actual, self.matcher, self._client_reason)
 
         except AssertionError as e:
-            # FIXME: to_text
-            try:
-                exc = str(e).decode('utf8')
-            except UnicodeDecodeError:
-                exc = repr(e)
-
-            self._reason = u"{0} {1}".format(self.describe_actual(), exc)
+            self._reason = u"{0} {1}".format(self.describe_actual(), to_text(e))
             return False
 
         return True
 
-    def __unicode__(self):
-        return u"assert that %s" % self._reason
+    def __str__(self):
+        return "assert that %s" % self._reason
 
 
 class PollDeferredAssertion(DeferredAssertion):
