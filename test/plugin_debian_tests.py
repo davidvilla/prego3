@@ -15,5 +15,5 @@ class Debian(TestCase):
 
     def test_installed_version(self):
         depends = Task()
-        depends.assert_that(Package('python-prego'),
-                            installed(min_version='0.20130206'))
+        depends.assert_that(Package('bash'),
+                            installed(min_version='3.0'))

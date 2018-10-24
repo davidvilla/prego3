@@ -1,0 +1,7 @@
+image: arco/prego-testenv:latest
+
+pipelines:
+  default:
+    - step:
+        script:
+          - SHELL=/bin/bash nosetests3 test

@@ -3,7 +3,7 @@
 from hamcrest import contains_string, is_not
 from prego import TestCase, Task
 
-prego_cmd = 'bin/prego %s -c /dev/null'
+prego_cmd = 'bin/prego3 %s -c /dev/null'
 
 
 class TestOutOptions(TestCase):

@@ -34,12 +34,12 @@ class DebPackageInstalled(Matcher):
         retval = not sp.wait()
 
         if retval and self.version is not None:
-            installed = out.getvalue().split()[2].strip()
+            installed = out.getvalue().decode(errors='ignore').split()[2].strip()
             retval &= installed >= self.version
 
-#            Log.debug("%s: pkg:%s inst:%s req:%s" %
-#                      (self.__class__.__name__, self.package,
-#                       installed, self.version))
+            print("%s: pkg:%s inst:%s req:%s" %
+                  (self.__class__.__name__, self.package,
+                   installed, self.version))
 
         return retval
 
