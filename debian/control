@@ -3,9 +3,8 @@ Section: python
 Priority: optional
 Maintainer: David Villa Alises <David.Villa@gmail.com>
 Homepage: https://bitbucket.org/arco_group/prego
-Build-Depends: debhelper (>= 9), python3, python3-setuptools, python3-doublex
-Standards-Version: 3.9.8
-X-Python-Version: >= 2.7
+Build-Depends: debhelper (>= 9), python3, python3-setuptools, python3-doublex, dh-python
+Standards-Version: 4.2.1
 
 Package: python3-prego
 Architecture: all

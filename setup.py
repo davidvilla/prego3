@@ -33,8 +33,8 @@ config = dict(
         'console_scripts': [ 'prego3=prego:run' ]
     },
     data_files       = [
-        ('share/doc/prego', ['README.rst']),
-        ('share/lib/prego', ['config.spec', 'defaults.config']),
+        ('share/doc/prego3', ['README.rst']),
+        ('share/lib/prego3', ['config.spec', 'defaults.config']),
     ],
     url              = 'https://bitbucket.org/arco_group/prego',
     license          = 'GPLv3',

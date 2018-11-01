@@ -19,9 +19,9 @@ IDENTIFIERS = string.ascii_uppercase + string.ascii_lowercase
 
 config_path = [
     '.',
-    '/usr/share/lib/prego',        # debian
-    '/share/lib/prego',            # virtualenv
-    '/usr/local/share/lib/prego']  # pip
+    '/usr/share/lib/prego3',        # debian
+    '/share/lib/prego3',            # virtualenv
+    '/usr/local/share/lib/prego3']  # pip
 
 PREGO_SPECS = os.path.abspath(resolve_path('config.spec', config_path)[0])
 PREGO_CMD_DEFAULTS = os.path.abspath(resolve_path('defaults.config', config_path)[0])

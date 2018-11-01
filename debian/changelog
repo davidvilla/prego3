@@ -1,3 +1,11 @@
+prego3 (0.20181031-1) unstable; urgency=low
+
+  * New release
+  * Renaming directories to "prego3" so it can be installed along with the
+    legacy prego version.
+
+ -- David Villa Alises <David.Villa@gmail.com>  Thu, 01 Nov 2018 20:54:10 +0100
+
 prego3 (0.20181024.1-1) unstable; urgency=low
 
   * New release
