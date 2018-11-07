@@ -23,7 +23,7 @@ from . import gvars
 from .assertion import Matcher
 
 from .tools import create_logger, StatusFilter
-#set_logger_default_formatter()
+# set_logger_default_formatter()
 
 
 class MatcherRequiredError(Exception):
@@ -35,9 +35,9 @@ class Task(Printable):
 
     def __init__(self, desc='', detach=False):
 
-#        print "stdout:", config.stdout
-#        print "stderr:", config.stderr
-#        print "keep-going:", config.keep_going
+        # print "stdout:", config.stdout
+        # print "stderr:", config.stderr
+        # print "keep-going:", config.keep_going
 
         gvars.tasks.append(self)
         self.interpolator = Interpolator()
@@ -144,7 +144,7 @@ class Task(Printable):
 
         except Exception as e:
             # FIXME: convert e to an Assertion
-#            self.set_reason(Status.ERROR, e)
+            # self.set_reason(Status.ERROR, e)
             log_traceback(self.log, prefix='%s| ' % INDENTST)
 
         finally:
@@ -206,8 +206,9 @@ class Task(Printable):
         try:
             return [x for x in self.assertions if isinstance(x, Command)][-1]
         except IndexError:
-            raise IndexError("No command assertion was defined")
+            raise IndexError("No command assertions was defined")
 
+    @property
     def is_running(self):
         return self.status == Status.UNKNOWN
 
@@ -254,7 +255,7 @@ class Running(Matcher):
         return cmd.is_running()
 
     def describe_to(self, description):
-        description.append_text('running ')
+        description.append_text('is running ')
 
 
 def running():
