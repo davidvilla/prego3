@@ -208,7 +208,6 @@ class Task(Printable):
         except IndexError:
             raise IndexError("No command assertions was defined")
 
-    @property
     def is_running(self):
         return self.status == Status.UNKNOWN
 
