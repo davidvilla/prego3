@@ -26,7 +26,7 @@ exec(open('version.py').read())
 config = dict(
     name             = 'prego3',
     version          = __version__,
-    description      = 'System test framework over POSIX shells',
+    description      = 'System test framework over POSIX shells (python3 version',
     author           = 'David Villa Alises',
     author_email     = 'David.Villa@gmail.com',
     entry_points     = {

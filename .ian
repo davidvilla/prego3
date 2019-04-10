@@ -11,4 +11,5 @@ function ian-release-hook() {
 function ian-clean-hook {
     rm -rf venv dist .pc build
     rm -rf prego3.egg-info
+	rm -rf .tox
 }
