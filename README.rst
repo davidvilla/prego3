@@ -49,6 +49,10 @@ Subjects (and their associated assertions):
   - listen_port(number, proto='tcp')
   - reachable()
 
+- Package(name)
+
+  - installed()
+
 
 Execution model
 ===============
