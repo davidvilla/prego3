@@ -22,6 +22,24 @@ Subjects (and their associated assertions):
 - Task(desc='', detach=False)
 
   - command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)
+
+    - expected: check command line return code. Assertion fails if value does not match. 
+      
+      - Default value: 0.
+      - With NONE the return code is ignored.
+
+    - timeout: assertion fails if execution time exceed timeout (in seconds)
+
+      - Default value is 5.
+      - With 0, timeout is not checked.
+
+    - signal: send the given signal number to kill command.
+
+    - cwd: change to the specified directory before execute command.
+
+    - env: a diccionary of environment variables. 
+
+
   - running()
   - terminated()
 
@@ -58,9 +76,6 @@ Execution model
 ===============
 
 
-
-command
-=======
 
 
 context
