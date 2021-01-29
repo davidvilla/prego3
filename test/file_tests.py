@@ -34,10 +34,11 @@ class FileMatchers(TestCase, AssertionTest):
         c.eval()
 
     def test_file_contains(self):
+        open('/tmp/prego-content', 'wt').write('this a sample file for prego')
         prego.init()
         t = prego.Task()
-        t.assert_that(prego.File('/etc/fstab').content,
-                      hamcrest.contains_string('file system'))
+        t.assert_that(prego.File('/tmp/prego-content').content,
+                      hamcrest.contains_string('sample file'))
         prego.commit()
 
     def test_non_exising_file_contains(self):
@@ -89,5 +90,5 @@ class FileMatchers(TestCase, AssertionTest):
     def test_file_compare_fail(self):
         prego.init()
         t = prego.Task()
-        t.assert_that(prego.File('/etc/fstab'), hamcrest.is_not(prego.File('/etc/motd')))
+        t.assert_that(prego.File('/etc/fstab'), hamcrest.is_not(prego.File('/etc/passwd')))
         prego.commit()

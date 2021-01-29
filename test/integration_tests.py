@@ -85,9 +85,9 @@ class Assertions(TestCase):
     def test_pre_post(self):
         task = Task()
         task.assert_that(Variable('SHELL'), exists())
-        task.assert_that(File('/etc/motd'), exists())
-        task.command('cp /etc/motd /tmp/')
-        task.generate_files('/tmp/motd')
+        task.assert_that(File('/etc/fstab'), exists())
+        task.command('cp /etc/fstab /tmp/')
+        task.generate_files('/tmp/fstab')
 
         task.command('ls / > /tmp/kk')  # shell=True)
         task.generate_files('/tmp/kk')
