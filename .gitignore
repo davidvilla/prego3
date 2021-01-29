@@ -1,1 +1,5 @@
+**/*~
 **/__pycache__
+prego3.egg-info/*
+.tox
+dist

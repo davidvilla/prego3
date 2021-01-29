@@ -36,17 +36,21 @@ class Interpolator(object):
         ))
 
     def __init__(self):
-        set_testpath()
-        testdir, testname  = os.path.split(gvars.testpath)
-
         self.vars = self.fixed_vars.copy()
+        self.vars.update(gvars.context)
+        set_testpath()
+
+        if not gvars.testpath:
+            print("ERROR: $testdir, $fulltestdir and $testfilename not available in this context")
+            return
+
+        testdir, testname = os.path.split(gvars.testpath)
         self.vars.update(
             dict(
                 testdir      = os.path.relpath(testdir),
                 fulltestdir  = os.path.abspath(testdir),
                 testfilename = testname,
-                ))
-        self.vars.update(gvars.context)
+            ))
 
     def apply(self, text):
         if not isinstance(text, six.string_types):
@@ -124,10 +128,15 @@ def set_testpath():
     if gvars.testpath is None:
         return
 
+    _next = False
     it = iter(traceback.extract_stack())
     for frame in it:
-        if frame[3] == 'testMethod()':
-            gvars.testpath = six.next(it)[0]
+        if _next:
+            gvars.testpath = frame[0]
+            return
+
+        if frame[2] == '_callTestMethod':
+            _next = True
 
 
 def to_text(e):

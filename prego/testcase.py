@@ -2,7 +2,6 @@
 
 import sys
 import logging
-import warnings
 import unittest
 import contextlib
 from commodity.path import child_relpath
@@ -35,7 +34,7 @@ class PregoTestCase(object):
         except TestFailed as test_failed:
             self.status = Status.FAIL
             raise test_failed  # shrink traceback
-        except:
+        except Exception:
             self.status = Status.ERROR
             raise
         finally:
@@ -44,6 +43,19 @@ class PregoTestCase(object):
 
 
 class TestCase(unittest.TestCase):
+    def _callSetUp(self, testMethod=None):
+        if testMethod:
+            gvars.testpath = testpath = testMethod.__code__.co_filename
+            self.prego_case = PregoTestCase(self, self._testMethodName, testpath)
+        self.setUp()
+
+    def _callTestMethod(self, method):
+        method()
+        self.prego_case.commit()
+
+    def _callTearDown(self):
+        self.tearDown()
+
     def run(self, result=None):
         orig_result = result
         if result is None:
@@ -75,17 +87,14 @@ class TestCase(unittest.TestCase):
             self._outcome = outcome
 
             with outcome.testPartExecutor(self):
-                gvars.testpath = testpath = testMethod.__code__.co_filename
-                prego_case = PregoTestCase(self, self._testMethodName, testpath)
-                self.setUp()
+                self._callSetUp(testMethod)
             if outcome.success:
                 outcome.expecting_failure = expecting_failure
                 with outcome.testPartExecutor(self, isTest=True):
-                    testMethod()
-                    prego_case.commit()
+                    self._callTestMethod(testMethod)
                 outcome.expecting_failure = False
                 with outcome.testPartExecutor(self):
-                    self.tearDown()
+                    self._callTearDown()
 
             self.doCleanups()
             for test, reason in outcome.skipped:

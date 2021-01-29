@@ -7,7 +7,7 @@ from prego.debian import Package, installed
 class pip_tests(TestCase):
     def test_install(self):
         task = Task()
-        task.assert_that(Package('python-virtualenv'), installed())
+        task.assert_that(Package('python3-virtualenv'), installed())
         task.assert_that(Package('virtualenv'), installed())
         task.command('rm dist/*', expected=None)
         task.command('python setup.py sdist', timeout=20)

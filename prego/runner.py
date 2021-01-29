@@ -13,7 +13,7 @@ from .tools import set_testpath
 log = logging.getLogger('prego')
 
 
-if sys.version_info >= (3,9):
+if sys.version_info >= (3, 9):
     def thread_alive(t):
         return t.is_alive()
 else:
@@ -92,7 +92,7 @@ def commit(logger=None):
         result = Status.FAIL
         # shrink trackeback
         raise test_failure
-    except:
+    except Exception:
         result = Status.ERROR
         raise
     finally:

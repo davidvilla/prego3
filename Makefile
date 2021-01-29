@@ -11,5 +11,5 @@ pypi-release:
 	twine upload dist/*
 
 clean:
-	$(RM) -r build prego.egg-info venv dist
+	$(RM) -r build prego.egg-info venv dist .tox
 	find -name "*flymake*" | xargs $(RM)
