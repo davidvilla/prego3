@@ -13,7 +13,7 @@ import prego
 
 class FileMatchers(TestCase, AssertionTest):
     def test_file_exists(self):
-        c = self.assert_that(prego.File('/etc/motd'), prego.exists())
+        c = self.assert_that(prego.File('/etc/fstab'), prego.exists())
         c.eval()
 
     def test_file_exists_in_cwd(self):
@@ -36,8 +36,8 @@ class FileMatchers(TestCase, AssertionTest):
     def test_file_contains(self):
         prego.init()
         t = prego.Task()
-        t.assert_that(prego.File('/etc/motd').content,
-                      hamcrest.contains_string('WARRANTY'))
+        t.assert_that(prego.File('/etc/fstab').content,
+                      hamcrest.contains_string('file system'))
         prego.commit()
 
     def test_non_exising_file_contains(self):
@@ -48,7 +48,7 @@ class FileMatchers(TestCase, AssertionTest):
         prego.commit()
 
     def test_file_contains_fail(self):
-        c = self.assert_that(prego.File('/etc/motd').content,
+        c = self.assert_that(prego.File('/etc/fstab').content,
                              hamcrest.contains_string('missing'))
 
         with self.assertRaises(prego.PregoAssertionFailed):
@@ -57,16 +57,16 @@ class FileMatchers(TestCase, AssertionTest):
     def test_file_permissions(self):
         prego.init()
         t = prego.Task()
-        t.assert_that(prego.File('/etc/motd'), prego.has_permissions(0o644))
-        t.assert_that(prego.File('/etc/motd'), prego.has_permissions(0o200))
-        t.assert_that(prego.File('/etc/motd'), prego.has_permissions(0o400))
-        t.assert_that(prego.File('/etc/motd'), prego.has_permissions(0o440))
-        t.assert_that(prego.File('/etc/motd'), prego.has_permissions(0o004))
+        t.assert_that(prego.File('/etc/fstab'), prego.has_permissions(0o644))
+        t.assert_that(prego.File('/etc/fstab'), prego.has_permissions(0o200))
+        t.assert_that(prego.File('/etc/fstab'), prego.has_permissions(0o400))
+        t.assert_that(prego.File('/etc/fstab'), prego.has_permissions(0o440))
+        t.assert_that(prego.File('/etc/fstab'), prego.has_permissions(0o004))
         prego.commit()
 
     def test_file_compare(self):
         prego.init()
-        a = prego.File('/etc/motd')
+        a = prego.File('/etc/passwd')
         b = prego.File('/etc/fstab')
 
         t = prego.Task()

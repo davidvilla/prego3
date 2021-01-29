@@ -190,6 +190,7 @@ class HasPermissions(Matcher):
         if not item.exists():
             return False
 
+        # FIXME: file must exist!
         mode = os.stat(os.path.abspath(item.path)).st_mode
         print(mode)
         self.actual = stat.S_IMODE(mode)
