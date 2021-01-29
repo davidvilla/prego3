@@ -31,7 +31,7 @@ exec(open('version.py').read())
 config = dict(
     name             = 'prego3',
     version          = __version__,
-    description      = 'System test framework over POSIX shells (python3 version',
+    description      = 'System test framework for POSIX shells (python3 version)',
     author           = 'David Villa Alises',
     author_email     = 'David.Villa@gmail.com',
     entry_points     = {
@@ -41,7 +41,7 @@ config = dict(
         ('share/doc/prego3', ['README.rst']),
         ('share/lib/prego3', ['config.spec', 'defaults.config']),
     ],
-    url              = 'https://bitbucket.org/arco_group/prego',
+    url              = 'https://github.com/davidvilla/prego',
     license          = 'GPLv3',
     packages         = find_packages(),
     provides         = ['prego3'],
@@ -55,16 +55,7 @@ config = dict(
         'Topic :: Software Development',
         'Topic :: Software Development :: Quality Assurance',
         'Topic :: Software Development :: Testing',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.0',
-        'Programming Language :: Python :: 3.1',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
     ],
 )
 
