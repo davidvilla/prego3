@@ -20,7 +20,7 @@ class Net(TestCase):
     def test_netcat(self):
         context.port = 2000
         server = Task(desc='ncat server', detach=True)
-        server.assert_that(Package('ncat'), installed())
+        server.assert_that(Package('nmap'), installed())
         server.assert_that(localhost,
                            hamcrest.is_not(listen_port(context.port)))
         cmd = server.command('ncat -l -p $port')
