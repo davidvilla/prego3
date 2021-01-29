@@ -17,9 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys
 from distutils.core import setup
 from setuptools import find_packages
+
+
+def get_reqs():
+    with open('requirements.txt') as fd:
+        return fd.readlines()
+
 
 exec(open('version.py').read())
 
@@ -41,7 +46,7 @@ config = dict(
     packages         = find_packages(),
     provides         = ['prego3'],
     long_description = open('README.rst').read(),
-    install_requires = ['PyHamcrest', 'commodity', 'configobj', 'nose>=1.3.0', 'blessings'],
+    install_requires = get_reqs(),
     classifiers      = [
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
@@ -62,11 +67,5 @@ config = dict(
         'Programming Language :: Python :: 3.7',
     ],
 )
-
-
-if sys.version_info >= (3,):
-    config.update(dict(
-        use_2to3=True,
-    ))
 
 setup(**config)

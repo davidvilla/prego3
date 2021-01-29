@@ -2,3 +2,4 @@ include README.rst
 include config.spec
 include defaults.config
 include version.py
+include requirements.txt

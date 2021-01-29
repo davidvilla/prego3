@@ -3,3 +3,7 @@
 prego3.egg-info/*
 .tox
 dist
+.pybuild
+debian/*.log
+.pc
+debian/python3-prego*
