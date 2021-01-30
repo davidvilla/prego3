@@ -22,7 +22,7 @@ Subjects (and their associated assertions):
 ``Task(desc='', detach=False)``
 -------------------------------
 
--  ``command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
+- ``command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
 
   - ``expected``: check command line return code. Assertion fails if value does not match.
 
