@@ -23,8 +23,8 @@ Subjects (and their associated assertions):
 
   - ``command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
 
-    - ``expected``: check command line return code. Assertion fails if value does not match. 
-      
+    - ``expected``: check command line return code. Assertion fails if value does not match.
+
       - Default value: 0.
       - With NONE the return code is ignored.
 
@@ -37,27 +37,26 @@ Subjects (and their associated assertions):
 
     - ``cwd``: change to the specified directory before execute command.
 
-    - ``env``: a diccionary of environment variables. 
-
+    - ``env``: a diccionary of environment variables.
 
   - ``running()``
   - ``terminated()``
 
 - ``File(path)`` check local files.
 
-  - ``exists()``: the file ``path`` exists. 
+  - ``exists()``: the file ``path`` exists.
 
 - ``File().content`` checks contents of files.
 
   - any hamcrest string matchers (ie: contains_string)
-  
+
     - example: ``task.wait_that(File('foo'), hamcrest.is_(File('bar'))``
 
 - ``Variable(nam)`` checks environment variables.
 
   - ``exists()``: the variable ``name`` exists.
   - any hamcrest string matchers (ie: contains_string)
-  
+
     - example: ``task.assert_that(Variable(SHELL), hamcrest.constains_string('bash'))``
 
 - ``Command`` checks program execution.
@@ -71,7 +70,7 @@ Subjects (and their associated assertions):
   - ``listen_port(number, proto='tcp')``: a server is listen at ``port``.
   - ``reachable()``: host answer to ping.
 
-- ``Package(name)``: checks a Debian package 
+- ``Package(name)``: checks a Debian package
 
   - ``installed()``
 
