@@ -19,60 +19,83 @@ Three assertion checkers are available:
 
 Subjects (and their associated assertions):
 
-- ``Task(desc='', detach=False)``
+``Task(desc='', detach=False)``
+-------------------------------
 
-  - ``command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
+-  ``command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
 
-    - ``expected``: check command line return code. Assertion fails if value does not match.
+  - ``expected``: check command line return code. Assertion fails if value does not match.
 
-      - Default value: 0.
-      - With NONE the return code is ignored.
+    - Default value: 0.
+    - With NONE the return code is ignored.
 
-    - ``timeout``: assertion fails if execution time exceed timeout (in seconds)
+  - ``timeout``: assertion fails if execution time exceed timeout (in seconds)
 
-      - Default value is 5.
-      - With 0, timeout is not checked.
+    - Default value is 5.
+    - With 0, timeout is not checked.
 
-    - ``signal``: send the given signal number to kill command.
+  - ``signal``: send the given signal number to kill command.
+  - ``cwd``: change to the specified directory before execute command.
+  - ``env``: a diccionary of environment variables.
 
-    - ``cwd``: change to the specified directory before execute command.
+- ``running()``
+- ``terminated()``
 
-    - ``env``: a diccionary of environment variables.
 
-  - ``running()``
-  - ``terminated()``
+``File(path)``
+--------------
 
-- ``File(path)`` check local files.
+Check local files.
 
-  - ``exists()``: the file ``path`` exists.
+- ``exists()``: the file ``path`` exists.
 
-- ``File().content`` checks contents of files.
 
-  - any hamcrest string matchers (ie: contains_string)
+``File().content``
+------------------
 
-    - example: ``task.wait_that(File('foo'), hamcrest.is_(File('bar'))``
+Checks contents of files.
 
-- ``Variable(nam)`` checks environment variables.
+- any hamcrest string matchers (ie: contains_string)
 
-  - ``exists()``: the variable ``name`` exists.
-  - any hamcrest string matchers (ie: contains_string)
+  - example: ``task.wait_that(File('foo'), hamcrest.is_(File('bar'))``
 
-    - example: ``task.assert_that(Variable(SHELL), hamcrest.constains_string('bash'))``
 
-- ``Command`` checks program execution.
+``Variable(nam)``
+-----------------
 
-  - ``running()``
-  - ``exits_with(value)``
-  - ``killed_by(signal)``
+Checks environment variables.
 
-- ``Host(hostname)`` checks a network computer.
+- ``exists()``: the variable ``name`` exists.
+- any hamcrest string matchers (ie: contains_string)
 
-  - ``listen_port(number, proto='tcp')``: a server is listen at ``port``.
-  - ``reachable()``: host answer to ping.
+  - example: ``task.assert_that(Variable(SHELL), hamcrest.constains_string('bash'))``
 
-- ``Package(name)``: checks a Debian package
 
-  - ``installed()``
+``Command``
+-----------
+
+Checks program execution.
+
+- ``running()``
+- ``exits_with(value)``
+- ``killed_by(signal)``
+
+
+``Host(hostname)``
+------------------
+
+Checks a network computer.
+
+- ``listen_port(number, proto='tcp')``: a server is listen at ``port``.
+- ``reachable()``: host answer to ping.
+
+
+``Package(name)``
+-----------------
+
+Checks a Debian package
+
+- ``installed()``
 
 
 context
@@ -94,14 +117,14 @@ Interpolation
 
 Available interpolation variables are:
 
-- $basedir: the directory where prego is executed (relative).
-- $fullbasedir: absolute path of $basedir.
-- $testdir: the directory where the running test file is.
-- $fulltestdir: absolute path of $testdir.
-- $testfilename: the file name of the running test.
-- $tmpbase: a safe directory (per user) to put temporary files.
-- $tmp: a safe directory (per user and prego instance) to put temporary files.
-- $pid: the prego instance PID.
+- ``$basedir``: the directory where prego is executed (relative).
+- ``$fullbasedir``: absolute path of $basedir.
+- ``$testdir``: the directory where the running test file is.
+- ``$fulltestdir``: absolute path of $testdir.
+- ``$testfilename``: the file name of the running test.
+- ``$tmpbase``: a safe directory (per user) to put temporary files.
+- ``$tmp``: a safe directory (per user and prego instance) to put temporary files.
+- ``$pid``: the prego instance PID.
 
 
 Examples
@@ -189,8 +212,8 @@ Same ncat test invoking ``prego``::
   OK
 
 
-Testing google.com reachability
-===============================
+Testing google reachability
+===========================
 
 ::
 
@@ -224,9 +247,3 @@ Testing google.com reachability
           cmd = web.command('wget http://www.google.com/webhp?hl=en -O-')
           web.assert_that(cmd.stdout.content,
                           hamcrest.contains_string('value="I\'m Feeling Lucky"'))
-
-.. Local Variables:
-..  coding: utf-8
-..  mode: flyspell
-..  ispell-local-dictionary: "american"
-.. End:
