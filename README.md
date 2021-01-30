@@ -28,6 +28,34 @@ Specific assertions:
 - ``terminated()``, the task is over.
 
 
+``Task.command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
+-------------------------------------------------------------------------------
+
+Checks program execution.
+
+Arguments:
+
+- ``expected``: check command line return code. Assertion fails if value does not match.
+
+  - Default value: 0.
+  - Return code is ignored if is set to None.
+
+- ``timeout``: assertion fails if execution time exceed timeout (in seconds)
+
+  - Default value is 5.
+  - With 0, timeout is not checked.
+
+- ``signal``: send the given signal number to kill command.
+- ``cwd``: change to the specified directory before execute command.
+- ``env``: a diccionary of environment variables.
+
+Assertions:
+
+- ``running()``
+- ``exits_with(value)``
+- ``killed_by(signal)``
+
+
 ``File(path)``
 --------------
 
@@ -56,33 +84,6 @@ Checks environment variables.
 
   - example: ``task.assert_that(Variable(SHELL), hamcrest.constains_string('bash'))``
 
-
-``Task.command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
--------------------------------------------------------------------------------
-
-Checks program execution.
-
-Arguments:
-
-- ``expected``: check command line return code. Assertion fails if value does not match.
-
-  - Default value: 0.
-  - Return code is ignored if is set to None.
-
-- ``timeout``: assertion fails if execution time exceed timeout (in seconds)
-
-  - Default value is 5.
-  - With 0, timeout is not checked.
-
-- ``signal``: send the given signal number to kill command.
-- ``cwd``: change to the specified directory before execute command.
-- ``env``: a diccionary of environment variables.
-
-Assertions:
-
-- ``running()``
-- ``exits_with(value)``
-- ``killed_by(signal)``
 
 
 ``Host(hostname)``
