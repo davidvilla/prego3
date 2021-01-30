@@ -9,13 +9,7 @@ signal to processes, set assertions on command stdout or stderr, etc.
 Subjects
 ========
 
-
-Three assertion checkers are available:
-
-
-
-
-Subjects (and their associated assertions):
+A summary of subjects and their associated assertions.
 
 ``Task(desc='', detach=False)``
 -------------------------------
