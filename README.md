@@ -6,40 +6,32 @@ network ports. It provides support to run shell commands on background, send
 signal to processes, set assertions on command stdout or stderr, etc.
 
 
-Concepts
+Subjects
 ========
 
-A ``Task()`` is a set of assertions, usually involving the execution of a program.
 
 Three assertion checkers are available:
 
-- ``task.assert_that``, for single shot checking.
-- ``task.wait_that``, for polling recurrent checking.
-- ``task.command``, to run arbitrary shell command.
+
+
 
 Subjects (and their associated assertions):
 
 ``Task(desc='', detach=False)``
 -------------------------------
 
-- ``command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
+Usuallys involve the execution of a program, pre-conditions and post-conditions as assertions.
 
-  - ``expected``: check command line return code. Assertion fails if value does not match.
+Common assertions:
 
-    - Default value: 0.
-    - With NONE the return code is ignored.
+- ``assert_that``, for single shot checking.
+- ``wait_that``, for polling recurrent checking.
+- ``command``, to run arbitrary shell command.
 
-  - ``timeout``: assertion fails if execution time exceed timeout (in seconds)
+Specific assertions:
 
-    - Default value is 5.
-    - With 0, timeout is not checked.
-
-  - ``signal``: send the given signal number to kill command.
-  - ``cwd``: change to the specified directory before execute command.
-  - ``env``: a diccionary of environment variables.
-
-- ``running()``
-- ``terminated()``
+- ``running()``, the task is still running.
+- ``terminated()``, the task is over.
 
 
 ``File(path)``
@@ -71,10 +63,28 @@ Checks environment variables.
   - example: ``task.assert_that(Variable(SHELL), hamcrest.constains_string('bash'))``
 
 
-``Command``
------------
+``Task.command(cmd_line, stdout, stderr, expected, timeout, signal, cwd, env)``
+-------------------------------------------------------------------------------
 
 Checks program execution.
+
+Arguments:
+
+- ``expected``: check command line return code. Assertion fails if value does not match.
+
+  - Default value: 0.
+  - Return code is ignored if is set to None.
+
+- ``timeout``: assertion fails if execution time exceed timeout (in seconds)
+
+  - Default value is 5.
+  - With 0, timeout is not checked.
+
+- ``signal``: send the given signal number to kill command.
+- ``cwd``: change to the specified directory before execute command.
+- ``env``: a diccionary of environment variables.
+
+Assertions:
 
 - ``running()``
 - ``exits_with(value)``
