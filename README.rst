@@ -76,12 +76,6 @@ Subjects (and their associated assertions):
   - ``installed()``
 
 
-Execution model
-===============
-
-
-
-
 context
 =======
 
