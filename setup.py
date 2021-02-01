@@ -38,7 +38,7 @@ config = dict(
         'console_scripts': [ 'prego3=prego:run' ]
     },
     data_files       = [
-        ('share/doc/prego3', ['README.rst']),
+        ('share/doc/prego3', ['README.md']),
         ('share/lib/prego3', ['config.spec', 'defaults.config']),
     ],
     url              = 'https://github.com/davidvilla/prego',
