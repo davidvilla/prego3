@@ -1,4 +1,4 @@
-include README.rst
+include README.md
 include config.spec
 include defaults.config
 include version.py
