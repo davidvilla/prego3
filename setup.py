@@ -45,7 +45,7 @@ config = dict(
     license          = 'GPLv3',
     packages         = find_packages(),
     provides         = ['prego3'],
-    long_description = open('README.rst').read(),
+    long_description = open('README.md').read(),
     install_requires = get_reqs(),
     classifiers      = [
         'Intended Audience :: Developers',
