@@ -39,7 +39,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt-get install -y python3-virtualenv virtualenv python3-pip python3-nose nmap
-        python3 -m pip install --upgrade pip tox doublex
+        python3 -m pip install --upgrade pip tox tox-gh-actions doublex
         if [ -f requirements.txt ]; then \
           python3 -m pip install -r requirements.txt; \
         fi
