@@ -1,7 +1,8 @@
 # -*- coding:utf-8; tab-width:4; mode:python -*-
 
-import string
+import sys
 import os
+import string
 import socket
 import traceback
 import logging
@@ -125,6 +126,13 @@ def load_default_config(dest):
 
 
 def set_testpath():
+    def is_test_caller(frame):
+        current = "{0.major}.{0.minor}".format(sys.version_info)
+        if current in ['3.5', '3.6', '3.7']:
+            return frame[3] == 'testMethod()'
+
+        return frame[2] == '_callTestMethod'
+
     if gvars.testpath is None:
         return
 
@@ -135,7 +143,7 @@ def set_testpath():
             gvars.testpath = frame[0]
             return
 
-        if frame[2] == '_callTestMethod':
+        if is_test_caller(frame):
             _next = True
 
 

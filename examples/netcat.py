@@ -9,7 +9,7 @@ from prego.debian import Package, installed
 class Net(TestCase):
     def test_netcat(self):
         ctx.port = 2000
-        server = Task(desc='ncat server', detach=True)
+        server = Task(desc='netcat server', detach=True)
         server.assert_that(Package('nmap'), installed())
         server.assert_that(localhost,
                            hamcrest.is_not(listen_port(ctx.port)))
@@ -17,7 +17,7 @@ class Net(TestCase):
         server.assert_that(cmd.stdout.content,
                            hamcrest.contains_string('bye'))
 
-        client = Task(desc='ncat client')
+        client = Task(desc='netcat client')
         client.wait_that(server, running())
         client.wait_that(localhost, listen_port(ctx.port))
         client.command('ncat -c "echo bye" localhost $port')
