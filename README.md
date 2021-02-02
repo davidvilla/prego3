@@ -127,8 +127,6 @@ Available interpolation variables are:
 
 ### Examples
 
-Testing ncat
-------------
 
 #### Testing netcat
 

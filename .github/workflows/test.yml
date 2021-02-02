@@ -8,10 +8,6 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    env:
-      SHELL: /bin/bash
-
     strategy:
       fail-fast: false
       max-parallel: 3
@@ -28,7 +24,10 @@ jobs:
             tox-env: py38
           - python-version: 3.9
             tox-env: py39
-
+    runs-on: ubuntu-latest
+    env:
+      SHELL: /bin/bash
+      TOXENV: ${{ matrix.tox-env }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
