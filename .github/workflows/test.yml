@@ -1,0 +1,52 @@
+name: test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SHELL: /bin/bash
+
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8, 3.9]
+        include:
+          - python-version: 3.5
+            tox-env: py35
+          - python-version: 3.6
+            tox-env: py36
+          - python-version: 3.7
+            tox-env: py37
+          - python-version: 3.8
+            tox-env: py38
+          - python-version: 3.9
+            tox-env: py39
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt-get install -y python3-virtualenv virtualenv python3-pip python3-nose nmap
+        python3 -m pip install --upgrade pip tox doublex
+        if [ -f requirements.txt ]; then \
+          python3 -m pip install -r requirements.txt; \
+        fi
+        python3 -c "import commodity"
+    - name: tox
+      run: |
+        pypath=$(pip3 show -f commodity | grep ^Location | awk '{print $2}')
+        echo PYTHONPATH=$pypath
+        export PYTHONPATH=$pypath
+        tox
