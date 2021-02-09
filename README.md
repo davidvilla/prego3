@@ -1,6 +1,6 @@
 ### System test framework with Python
 
-[![PyPI version](https://badge.fury.io/py/prego3.svg)](https://badge.fury.io/py/prego3) ![test](https://github.com/UCLM-ARCO/prego3-test/workflows/test/badge.svg)
+[![PyPI version](https://badge.fury.io/py/prego3.svg)](https://badge.fury.io/py/prego3) ![test](https://github.com/UCLM-ARCO/prego3/workflows/test/badge.svg)
 
 Prego is a library consisting on a set of clases and hamcrest matchers usefull
 to specify shell command interactions through files, environment variables,
