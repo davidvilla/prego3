@@ -45,6 +45,7 @@ config = dict(
     license          = 'GPLv3',
     packages         = find_packages(),
     provides         = ['prego3'],
+    long_description_content_type="text/markdown",
     long_description = open('README.md').read(),
     install_requires = get_reqs(),
     classifiers      = [
