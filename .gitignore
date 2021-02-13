@@ -7,3 +7,5 @@ dist
 debian/*.log
 .pc
 debian/python3-prego*
+debian/files
+debian/.debhelper/generated/python3-prego/installed-by-dh_installdocs

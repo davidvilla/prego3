@@ -3,13 +3,23 @@
 import os
 import pwd
 import string
+import site
+import sys
+from pprint import pprint
 
 import blessings
-#import commodity.term as term
 from commodity.pattern import memoized
 from commodity.os_ import resolve_path
 
 from . import config
+
+
+def get_site_base(path):
+    if not path or 'lib' not in path:
+        return None
+
+    return path.split('lib')[0]
+
 
 AUTO = '__AUTO__'
 PREGO_TMP_BASE = os.path.join('/tmp', 'prego-{0}'.format(pwd.getpwuid(os.getuid())[0]))
@@ -17,11 +27,25 @@ PREGO_TMP = os.path.join(PREGO_TMP_BASE, str(os.getpid()))
 INDENTST = 9 * ' '
 IDENTIFIERS = string.ascii_uppercase + string.ascii_lowercase
 
-config_path = [
-    '.',
-    '/usr/share/lib/prego3',        # debian
-    '/share/lib/prego3',            # virtualenv
-    '/usr/local/share/lib/prego3']  # pip
+install_paths = [
+    '/usr',          # debian (sys.prefix)
+    '/'              # virtualenv
+    '/usr/local',    # pip
+    site.USER_BASE]  # pip
+
+site_base = get_site_base(os.environ.get('PYTHONPATH'))
+if site_base:
+    install_paths.append(site_base)
+
+data_files_suffix = 'share/lib/prego3'
+config_path = ['.'] + [os.path.join(p, data_files_suffix) for p in install_paths]
+
+# print("--config_path--")
+# pprint(config_path)
+# print("--resolve_path--")
+# pprint(resolve_path('config.spec', config_path))
+# print(__file__)
+# print(site.USER_BASE)
 
 PREGO_SPECS = os.path.abspath(resolve_path('config.spec', config_path)[0])
 PREGO_CMD_DEFAULTS = os.path.abspath(resolve_path('defaults.config', config_path)[0])
