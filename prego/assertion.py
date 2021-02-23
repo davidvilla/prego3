@@ -192,9 +192,9 @@ class HasPermissions(Matcher):
 
         # FIXME: file must exist!
         mode = os.stat(os.path.abspath(item.path)).st_mode
-        print(mode)
+        # print(mode)
         self.actual = stat.S_IMODE(mode)
-        print(self.actual)
+        # print(self.actual)
 
         return (self.actual & self.expected) == self.expected
 

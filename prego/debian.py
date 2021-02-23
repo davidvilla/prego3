@@ -6,7 +6,7 @@ Debian related assertion
 from six import BytesIO
 
 from commodity.type_ import checked_type
-from commodity.os_ import SubProcess
+from commodity.os_ import SubProcess, DEVNULL
 from commodity.str_ import Printable
 
 from .assertion import Matcher
@@ -23,14 +23,14 @@ class Package(Printable):
 def debian_pkg_installed(package: str, version, prefix=''):
     out = BytesIO()
     sp = SubProcess('dpkg -l %s | grep ^ii' % package,
-                    stdout=out, shell=True)
+                    stdout=out, stderr=DEVNULL, shell=True)
     retval = not sp.wait()
 
     if retval and version is not None:
         present = out.getvalue().decode(errors='ignore').split()[2].strip()
         retval &= present >= version
 
-        print(f"{prefix}: pkg:{package} present:{present} req:{version}")
+        # print("{}: pkg:{} present:{} req:{}".format(prefix, package, present, version))
 
     return retval
 

@@ -9,3 +9,5 @@ debian/*.log
 debian/python3-prego*
 debian/files
 debian/.debhelper/generated/python3-prego/installed-by-dh_installdocs
+venv/
+.vscode/.ropeproject/
