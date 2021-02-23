@@ -1,12 +1,13 @@
-Index: prego/prego/const.py
+Index: prego3/prego/const.py
 ===================================================================
---- prego.orig/prego/const.py
-+++ prego/prego/const.py
-@@ -18,7 +18,6 @@ INDENTST = 9 * ' '
- IDENTIFIERS = string.ascii_uppercase + string.ascii_lowercase
-
- config_path = [
--    '.',
-     '/usr/share/lib/prego3',        # debian
-     '/share/lib/prego3',            # virtualenv
-     '/usr/local/share/lib/prego3']  # pip
+--- prego3.orig/prego/const.py
++++ prego3/prego/const.py
+@@ -38,7 +38,7 @@ if site_base:
+     install_paths.append(site_base)
+ 
+ data_files_suffix = 'share/lib/prego3'
+-config_path = ['.'] + [os.path.join(p, data_files_suffix) for p in install_paths]
++config_path = [os.path.join(p, data_files_suffix) for p in install_paths]
+ 
+ # print("--config_path--")
+ # pprint(config_path)
