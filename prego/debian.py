@@ -20,6 +20,21 @@ class Package(Printable):
         return self.name
 
 
+def debian_pkg_installed(package: str, version, prefix=''):
+    out = BytesIO()
+    sp = SubProcess('dpkg -l %s | grep ^ii' % package,
+                    stdout=out, shell=True)
+    retval = not sp.wait()
+
+    if retval and version is not None:
+        present = out.getvalue().decode(errors='ignore').split()[2].strip()
+        retval &= present >= version
+
+        print(f"{prefix}: pkg:{package} present:{present} req:{version}")
+
+    return retval
+
+
 class DebPackageInstalled(Matcher):
     def __init__(self, min_version):
         self.version = min_version
@@ -27,21 +42,7 @@ class DebPackageInstalled(Matcher):
 
     def _matches(self, package):
         self.package = package
-
-        out = BytesIO()
-        sp = SubProcess('dpkg -l %s | grep ^ii' % self.package.name,
-                        stdout=out, shell=True)
-        retval = not sp.wait()
-
-        if retval and self.version is not None:
-            installed = out.getvalue().decode(errors='ignore').split()[2].strip()
-            retval &= installed >= self.version
-
-            print("%s: pkg:%s inst:%s req:%s" %
-                  (self.__class__.__name__, self.package,
-                   installed, self.version))
-
-        return retval
+        return debian_pkg_installed(package.name, self.version, prefix=self.__class__.__name__)
 
     def describe_to(self, description):
         description.append_text('package is installed')
