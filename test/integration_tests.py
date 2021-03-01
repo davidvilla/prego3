@@ -134,8 +134,8 @@ class AdviceTests(TestCase):
     def test_no_detach_no_timeout(self):
         task = Task(detach=True)
         cmd = task.command(prego_cmd % '-v test/integration/advices.py:Timeout.test_no_detach_no_timeout', expected=None)
-        task.assert_that(cmd.stderr.content,
-                         contains_string("A.0 No timeout command in a non detached task could block forever!"))
+        task.wait_that(cmd.stderr.content,
+                       contains_string("A.0 No timeout command in a non detached task could block forever!"))
         Task().delay()
 
 
