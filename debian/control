@@ -15,9 +15,3 @@ Description: system test framework based on Python3 test cases
  variables, network ports. It provides support to run shell commands on
  background, send  signal to processes, set assertions on command stdout or
  stderr, etc.
-
-## Local Variables:
-## coding: utf-8
-## mode: flyspell
-## ispell-local-dictionary: "american"
-## End:

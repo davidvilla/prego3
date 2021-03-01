@@ -85,7 +85,7 @@ Checks environment variables.
 
 #### ``Host(hostname)``
 
-Checks a network computer.
+Checks a network host.
 
 - ``listen_port(number, proto='tcp')``: a server is listen at ``port``.
 - ``reachable()``: host answer to ping.
@@ -123,6 +123,11 @@ Available interpolation variables are:
 - ``$tmpbase``: a safe directory (per user) to put temporary files.
 - ``$tmp``: a safe directory (per user and prego instance) to put temporary files.
 - ``$pid``: the prego instance PID.
+
+
+### Shorthands
+
+- `Task.lastcmd` is the last defined `Task.command`.
 
 
 ### Examples

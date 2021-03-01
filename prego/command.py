@@ -9,7 +9,7 @@ import io
 import hamcrest
 
 from commodity.type_ import checked_type
-from commodity.os_ import SubProcess, FileTee, FuncAsTextFile
+from commodity.os_ import SubProcess, FileTee, FuncAsTextFile, DEVNULL
 from commodity.log import PrefixLogger
 
 from .assertion import Assertion, Matcher
@@ -164,7 +164,8 @@ class Command(Assertion):
         self.tinit = time.time()
         self.sp = SubProcess(
             self.cmdline,
-            stdout=stdout, stderr=stderr,
+            stdout=stdout or DEVNULL,
+            stderr=stderr or DEVNULL,
             close_outs=True,
             cwd=self.cwd,
             shell=True,
