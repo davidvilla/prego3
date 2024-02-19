@@ -1,5 +1,6 @@
 # -*- mode: python; coding: utf-8 -*-
 import time
+from functools import cached_property
 
 import hamcrest
 from hamcrest.core.base_matcher import BaseMatcher
@@ -8,7 +9,7 @@ from commodity.thread_ import start_new_thread
 from commodity.type_ import checked_type
 from commodity.str_ import Printable
 from commodity.log import UniqueFilter
-from commodity.pattern import memoizedproperty
+# from commodity.pattern import memoizedproperty
 from commodity.log import CallerData
 from commodity.path import child_relpath
 
@@ -81,7 +82,7 @@ class Task(Printable):
     def gen_assertion_index(self):
         return len(self.assertions)
 
-    @memoizedproperty
+    @cached_property
     def log(self):
         retval = create_logger(self.name)
         retval.addFilter(StatusFilter(self))

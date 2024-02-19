@@ -6,9 +6,10 @@ import string
 import site
 import sys
 from pprint import pprint
+from functools import cache
 
 import blessings
-from commodity.pattern import memoized
+# from commodity.pattern import memoized
 from commodity.os_ import resolve_path
 
 from . import config
@@ -53,7 +54,7 @@ USER_CONFIG = os.path.abspath(os.path.join(os.environ['HOME'], '.prego'))
 CWD_CONFIG = os.path.join(os.getcwd(), '.prego')
 
 
-@memoized
+@cache
 def term():
     return blessings.Terminal(force_styling=config.force_color)
 
