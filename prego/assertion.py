@@ -1,5 +1,6 @@
 # -*- mode: python; coding: utf-8 -*-
 
+import sys
 import os
 import time
 import stat
@@ -9,7 +10,14 @@ from hamcrest.core.base_matcher import BaseMatcher
 from commodity.testing import assert_that
 from commodity.str_ import Printable
 from commodity.log import UniqueFilter
-from commodity.pattern import memoizedproperty
+
+from commodity.os_ import resolve_path
+if sys.version_info < (3, 2):
+    from commodity.pattern import memoizedproperty as cached_property
+else:
+    from functools import cached_property
+
+
 
 from .const import Status, term, INDENTST
 from .exc import PregoAssertionFailed, PregoAssertionError, log_traceback
@@ -31,7 +39,7 @@ class Assertion(Printable):
         self._reason = '<no reason>'
 
     # FIXME: set private
-    @memoizedproperty
+    @cached_property
     def log(self):
         retval = create_logger(self.name)
         retval.addFilter(StatusFilter(self))

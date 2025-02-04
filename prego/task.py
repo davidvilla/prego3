@@ -1,4 +1,5 @@
 # -*- mode: python; coding: utf-8 -*-
+import sys
 import time
 
 import hamcrest
@@ -8,9 +9,13 @@ from commodity.thread_ import start_new_thread
 from commodity.type_ import checked_type
 from commodity.str_ import Printable
 from commodity.log import UniqueFilter
-from commodity.pattern import memoizedproperty
 from commodity.log import CallerData
 from commodity.path import child_relpath
+if sys.version_info < (3, 2):
+    from commodity.pattern import memoizedproperty as cached_property
+else:
+    from functools import cached_property
+
 
 from .const import Status, INDENTST, term, IDENTIFIERS, PREGO_TMP
 from .exc import (PregoAssertionException, log_traceback, UserBreak)
@@ -81,7 +86,7 @@ class Task(Printable):
     def gen_assertion_index(self):
         return len(self.assertions)
 
-    @memoizedproperty
+    @cached_property
     def log(self):
         retval = create_logger(self.name)
         retval.addFilter(StatusFilter(self))

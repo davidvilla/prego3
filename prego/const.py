@@ -8,8 +8,13 @@ import sys
 from pprint import pprint
 
 import blessings
-from commodity.pattern import memoized
+
+
 from commodity.os_ import resolve_path
+if sys.version_info < (3, 2):
+    from commodity.pattern import memoized as cache
+else:
+    from functools import cache
 
 from . import config
 
@@ -53,7 +58,7 @@ USER_CONFIG = os.path.abspath(os.path.join(os.environ['HOME'], '.prego'))
 CWD_CONFIG = os.path.join(os.getcwd(), '.prego')
 
 
-@memoized
+@cache
 def term():
     return blessings.Terminal(force_styling=config.force_color)
 
