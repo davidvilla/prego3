@@ -41,7 +41,7 @@ class ContextTests(unittest.TestCase):
         task.command('true')
 
         commit()
-        self.assertEquals(task.lastcmd.timeout, 3)
+        self.assertEqual(task.lastcmd.timeout, 3)
 
     # it is the same test as Signals.test_task_is_killed_by_specified_signal
     def test_default_signal(self):
@@ -54,7 +54,7 @@ class ContextTests(unittest.TestCase):
             commit()
             self.fail()
         except TestFailed:
-            self.assertEquals(cmd.returncode, -signal.SIGINT)
+            self.assertEqual(cmd.returncode, -signal.SIGINT)
 
     def test_default_env(self):
         init()
