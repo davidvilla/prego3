@@ -18,7 +18,7 @@ class Net(TestCase):
         Task().assert_that(Host('www.google.com'), listen_port(80))
 
     def test_netcat(self):
-        context.port = 2000
+        context.port = 23456
         server = Task(desc='netcat server', detach=True)
         server.assert_that(Package('nmap'), installed())
         server.assert_that(localhost,

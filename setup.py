@@ -17,8 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from distutils.core import setup
-from setuptools import find_packages
+# from distutils.core import setup
+from setuptools import find_packages, setup
 
 
 def get_reqs():

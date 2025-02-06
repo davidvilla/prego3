@@ -16,27 +16,27 @@ from prego import Status, gvars
 
 class TestStatus(TestCase):
     def test_repr(self):
-        self.assertEquals(str(Status.FAIL), 'FAIL')
-        self.assertEquals(str(Status.OK), 'OK')
-        self.assertEquals(str(Status.NOEXEC), 'NOEXEC')
+        self.assertEqual(str(Status.FAIL), 'FAIL')
+        self.assertEqual(str(Status.OK), 'OK')
+        self.assertEqual(str(Status.NOEXEC), 'NOEXEC')
 
 
 class Tasks(TestCase):
     def test_zero_tasks_is_ok(self):
         prego.init()
         prego.commit()
-        self.assertEquals(0, len(gvars.tasks))
+        self.assertEqual(0, len(gvars.tasks))
 
     def test_one_task(self):
         prego.init()
         prego.Task().command('true')
-        self.assertEquals(1, len(gvars.tasks))
+        self.assertEqual(1, len(gvars.tasks))
 
     def test_init(self):
         prego.init()
         prego.Task().command('true')
         prego.init()
-        self.assertEquals(0, len(gvars.tasks))
+        self.assertEqual(0, len(gvars.tasks))
 
     def test_2_cmds(self):
         prego.init()
@@ -97,7 +97,7 @@ class CommandOuts(TestCase):
 
         content = open(fname).read()
 
-        self.assert_(os.path.exists(fname))
+        self.assertTrue(os.path.exists(fname))
         self.assertIn('hi', content)
 
     def test_stdout_was_closed(self):
@@ -109,7 +109,7 @@ class CommandOuts(TestCase):
         task.command(u'echo hi', stdout=out)
         task.run()
 
-        self.assert_(out.closed)
+        self.assertTrue(out.closed)
 
     def test_logging_output(self):
         prego.init()
@@ -120,7 +120,7 @@ class CommandOuts(TestCase):
         task.run()
 
         self.assertIn('hi', cmd.stderr.read())
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.status)
 
 
 class OutContentMatchers(TestCase, AssertionTest):
@@ -195,7 +195,7 @@ class TaskMatchers(TestCase, AssertionTest):
         task.assert_that(cmd, prego.exits_with(0))
         prego.commit()
 
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.status)
 
     def test_task_running(self):
         with Stub() as cmd:
@@ -245,7 +245,7 @@ class CommandReturncodes(TestCase):
         task = prego.Task()
         task.run()
 
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.status)
 
     def test_ok(self):
         prego.init()
@@ -253,7 +253,7 @@ class CommandReturncodes(TestCase):
         task.command('echo hi')
         task.run()
 
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.status)
 
     def test_fail(self):
         prego.init()
@@ -261,7 +261,7 @@ class CommandReturncodes(TestCase):
         task.command("false")
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.status)
 
     def test_ls_ok(self):
         prego.init()
@@ -269,14 +269,14 @@ class CommandReturncodes(TestCase):
         task.command('ls')
         task.run()
 
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.status)
 
     def test_ls_fail(self):
         task = prego.Task()
         task.command("ls /missing-file")
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.status)
 
 
 class Tasks_with_shell(TestCase):
@@ -285,7 +285,7 @@ class Tasks_with_shell(TestCase):
 #        task = prego.Task('date | cat')
 #        task.run()
 #
-#        self.assertEquals(Status.FAIL, task.status)
+#        self.assertEqual(Status.FAIL, task.status)
 
 
 class PreAndPostAssertions(TestCase):
@@ -294,30 +294,30 @@ class PreAndPostAssertions(TestCase):
         task.command('true')
         task.run()
 
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.status)
 
     def test_fail(self):
         task = prego.Task()
         task.command('false')
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.status)
 
     def test_just_1_assertion_ok(self):
         task = prego.Task()
         task.assert_that('hello world', hamcrest.contains_string('llo'))
         task.run()
 
-        self.assertEquals(1, len(task.assertions))
-        self.assertEquals(Status.OK, task.status)
+        self.assertEqual(1, len(task.assertions))
+        self.assertEqual(Status.OK, task.status)
 
     def test_just_1_assertion_fail(self):
         task = prego.Task()
         task.assert_that('hello world', hamcrest.contains_string('missing'))
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
-        self.assertEquals(Status.FAIL, task.assertions[0].status)
+        self.assertEqual(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.assertions[0].status)
 
     def test_with_preassertion_fail_by_assertion(self):
         task = prego.Task()
@@ -325,9 +325,9 @@ class PreAndPostAssertions(TestCase):
         task.command('true')
         task.run()
 
-        self.assertEquals(4, len(task.assertions))
-        self.assertEquals(Status.FAIL, task.status)
-        self.assertEquals(Status.FAIL, task.assertions[0].status)
+        self.assertEqual(4, len(task.assertions))
+        self.assertEqual(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.assertions[0].status)
 
     def test_with_postassertion_fail_by_assertion(self):
         task = prego.Task()
@@ -335,9 +335,9 @@ class PreAndPostAssertions(TestCase):
         task.assert_that('hello world', hamcrest.contains_string('missing'))
         task.run()
 
-        self.assertEquals(4, len(task.assertions))
-        self.assertEquals(Status.FAIL, task.status)
-        self.assertEquals(Status.FAIL, task.assertions[3].status)
+        self.assertEqual(4, len(task.assertions))
+        self.assertEqual(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.assertions[3].status)
 
     def test_with_preassertion_fail_by_cmd(self):
         task = prego.Task()
@@ -345,8 +345,8 @@ class PreAndPostAssertions(TestCase):
         task.command('false')
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
-        self.assertEquals(Status.OK, task.assertions[0].status)
+        self.assertEqual(Status.FAIL, task.status)
+        self.assertEqual(Status.OK, task.assertions[0].status)
 
     def test_with_postassertion_fail_by_cmd__assertion_not_executed(self):
         task = prego.Task()
@@ -354,8 +354,8 @@ class PreAndPostAssertions(TestCase):
         task.assert_that('hello world', hamcrest.contains_string('worl'))
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
-        self.assertEquals(Status.NOEXEC, task.assertions[3].status)
+        self.assertEqual(Status.FAIL, task.status)
+        self.assertEqual(Status.NOEXEC, task.assertions[3].status)
 
     def test_cmd_pre_and_postassertion(self):
         task = prego.Task()
@@ -364,9 +364,9 @@ class PreAndPostAssertions(TestCase):
         task.assert_that(2, hamcrest.greater_than(1))
         task.run()
 
-        self.assertEquals(Status.OK, task.status)
-        self.assertEquals(Status.OK, task.assertions[0].status)
-        self.assertEquals(Status.OK, task.assertions[2].status)
+        self.assertEqual(Status.OK, task.status)
+        self.assertEqual(Status.OK, task.assertions[0].status)
+        self.assertEqual(Status.OK, task.assertions[2].status)
 
 
 class CommandTimeout(TestCase):
@@ -376,7 +376,7 @@ class CommandTimeout(TestCase):
         task.command('sleep 2', timeout=1, expected=None)
         task.run()
 
-        self.assertEquals(Status.FAIL, task.status)
+        self.assertEqual(Status.FAIL, task.status)
 
     def test_meet_default_timeout(self):
         prego.init()
@@ -395,7 +395,7 @@ class ConmmandSignal(TestCase):
             prego.commit()
             self.fail()
         except prego.TestFailed:
-            self.assertEquals(cmd.returncode, -SIGINT)
+            self.assertEqual(cmd.returncode, -SIGINT)
 
 
 class CommandEnv(prego.TestCase):

@@ -4,6 +4,8 @@ import sys
 import logging
 import unittest
 import contextlib
+import time
+
 from commodity.path import child_relpath
 
 from .runner import init, Runner
@@ -41,20 +43,17 @@ class PregoTestCase(object):
             self.log.info('$status ' + term().reverse(' END ') + ' $name')
             init()
 
-
+# patched unittest.case.TestCase (Python-3.12.8)
 class TestCase(unittest.TestCase):
     def _callSetUp(self, testMethod=None):
         if testMethod:
             gvars.testpath = testpath = testMethod.__code__.co_filename
             self.prego_case = PregoTestCase(self, self._testMethodName, testpath)
-        super()._callSetUp()
+        unittest.TestCase._callSetUp(self)
 
     def _callTestMethod(self, method):
         super()._callTestMethod(method)
         self.prego_case.commit()
-
-    def _callTearDown(self):
-        super()._callTearDown()
 
     def run(self, result=None):
         if result is None:
@@ -82,11 +81,12 @@ class TestCase(unittest.TestCase):
                 getattr(testMethod, "__unittest_expecting_failure__", False)
             )
             outcome = _Outcome(result)
+            start_time = time.perf_counter()
             try:
                 self._outcome = outcome
 
                 with outcome.testPartExecutor(self):
-                    self._callSetUp(testMethod)  ## this is the only line changed
+                    self._callSetUp(testMethod)  # PREGO PATCHED!!!!
                 if outcome.success:
                     outcome.expecting_failure = expecting_failure
                     with outcome.testPartExecutor(self):
@@ -95,6 +95,7 @@ class TestCase(unittest.TestCase):
                     with outcome.testPartExecutor(self):
                         self._callTearDown()
                 self.doCleanups()
+                self._addDuration(result, (time.perf_counter() - start_time))
 
                 if outcome.success:
                     if expecting_failure:
@@ -120,20 +121,11 @@ class TestCase(unittest.TestCase):
                 stopTestRun()
 
 
-
-# patched unittest.case._Outcome
-class _Outcome(object):
-    def __init__(self, result=None):
-        self.expecting_failure = False
-        self.result = result
-        self.result_supports_subtests = hasattr(result, "addSubTest")
-        self.success = True
-        self.skipped = []
-        self.expectedFailure = None
-        self.errors = []
+# patched unittest.case._Outcome (Python-3.12.8)
+class _Outcome(unittest.case._Outcome):
 
     @contextlib.contextmanager
-    def testPartExecutor(self, test_case, isTest=False):
+    def testPartExecutor(self, test_case, subTest=False):
         old_success = self.success
         self.success = True
         try:
@@ -142,24 +134,30 @@ class _Outcome(object):
             raise
         except unittest.case.SkipTest as e:
             self.success = False
-            self.skipped.append((test_case, str(e)))
+            unittest.case._addSkip(self.result, test_case, str(e))
         except unittest.case._ShouldStop:
             pass
         except:
             exc_info = list(sys.exc_info())
+
+            ## begin prego patch
             if exc_info[0] == TestFailed:
                 exc_info[2] = None  # remove traceback
+            ## end prego patch
 
             if self.expecting_failure:
                 self.expectedFailure = exc_info
             else:
                 self.success = False
-                self.errors.append((test_case, exc_info))
+                if subTest:
+                    self.result.addSubTest(test_case.test_case, test_case, exc_info)
+                else:
+                    unittest.case._addError(self.result, test_case, exc_info)
             # explicitly break a reference cycle:
             # exc_info -> frame -> exc_info
             exc_info = None
         else:
-            if self.result_supports_subtests and self.success:
-                self.errors.append((test_case, None))
+            if subTest and self.success:
+                self.result.addSubTest(test_case.test_case, test_case, None)
         finally:
             self.success = self.success and old_success
