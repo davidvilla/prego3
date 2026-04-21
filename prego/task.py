@@ -1,5 +1,3 @@
-# -*- mode: python; coding: utf-8 -*-
-import sys
 import time
 
 import hamcrest
@@ -11,10 +9,7 @@ from commodity.str_ import Printable
 from commodity.log import UniqueFilter
 from commodity.log import CallerData
 from commodity.path import child_relpath
-if sys.version_info < (3, 2):
-    from commodity.pattern import memoizedproperty as cached_property
-else:
-    from functools import cached_property
+from functools import cached_property
 
 
 from .const import Status, INDENTST, term, IDENTIFIERS, PREGO_TMP

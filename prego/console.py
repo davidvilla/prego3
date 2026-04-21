@@ -2,69 +2,61 @@
 
 import sys
 import os
+import time
 import logging
-import threading
 import argparse
 
 from logging import StreamHandler
-from logging import Handler
-log = logging.getLogger('nose.plugins.prego')
-log.addHandler(logging.StreamHandler())
 
-import nose
-from nose.plugins import logcapture
-from nose.plugins.logcapture import FilterSet
+import pytest
 
-from commodity.type_ import module_to_dict
-from commodity.log import CapitalLoggingFormatter, NullHandler
-from commodity.pattern import MetaBunch
+from commodity.log import NullHandler
 from commodity.args import parser, add_argument, args
 
 from . import config
 from .tools import set_logger_default_formatter, StatusFilter, update_obj
 from . import const
 
-logging.getLogger('nose.plugins.manager').addHandler(NullHandler())
-plugins_logger = logging.getLogger('nose')
-plugins_logger.propagate = False
-
-rdflog = logging.getLogger('rdflib')
-# rdflog.propagate = False
-rdflog.addFilter(StatusFilter())
-rdflog.addHandler(NullHandler())
-
 logging.getLogger().addFilter(StatusFilter())
 
 
-class MyMemoryHandler(Handler):
-    def __init__(self, logformat, logdatefmt, filters):
-        Handler.__init__(self)
-        fmt = CapitalLoggingFormatter(logformat, logdatefmt)
-        self.setFormatter(fmt)
-        self.filterset = FilterSet(filters)
-        self.buffer = []
-    def emit(self, record):
-        self.buffer.append(self.format(record))
-    def flush(self):
-        pass # do nothing
-    def truncate(self):
-        self.buffer = []
-    def filter(self, record):
-        return self.filterset.allow(record.name)
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['lock']
-        return state
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-        self.lock = threading.RLock()
+class _PregoReporter:
+    def __init__(self, verbose=False):
+        self._verbose = verbose
+        self._start = None
+        self._passed = 0
+        self._failed = 0
+        self._n_results = 0
 
+    @pytest.hookimpl
+    def pytest_sessionstart(self, session):
+        self._start = time.time()
 
+    @pytest.hookimpl
+    def pytest_runtest_logreport(self, report):
+        if report.when == 'call':
+            if report.passed:
+                self._passed += 1
+            elif report.failed:
+                self._failed += 1
+            if not self._verbose:
+                char = 'F' if report.failed else '.'
+                print(char, end='', file=sys.stderr, flush=True)
+                self._n_results += 1
 
-# if isinstance(logcapture.MyMemoryHandler, BufferingHandler):
-logcapture.MyMemoryHandler = MyMemoryHandler
-logcapture.LogCapture.logformat = '%(levelcapital)s. %(message)s'
-logcapture.clear = True
+    @pytest.hookimpl
+    def pytest_sessionfinish(self, session, exitstatus):
+        elapsed = time.time() - self._start
+        total = self._passed + self._failed
+        if not self._verbose and self._n_results:
+            print(file=sys.stderr)
+        noun = 'test' if total == 1 else 'tests'
+        print('-' * 70, file=sys.stderr)
+        print(f'Ran {total} {noun} in {elapsed:.3f}s', file=sys.stderr)
+        if self._failed:
+            print(f'\nFAILED (failures={self._failed})', file=sys.stderr)
+        else:
+            print('\nOK', file=sys.stderr)
 
 
 def run():
@@ -95,14 +87,14 @@ def run():
     parser.add_argument('-f', '--force-color', action='store_true', dest='force_color',
                         help='force colors and styling in output')
 
-    # pass throw nose options
-    parser.add_argument('nose', metavar='nose-args', nargs=argparse.REMAINDER)
+    # pass through pytest options
+    parser.add_argument('pytest_args', metavar='pytest-args', nargs=argparse.REMAINDER)
 
     parser.load_config_file(const.PREGO_CMD_DEFAULTS)
     parser.parse_args()
 
-    for x in range(args.nose.count('--')):
-        args.nose.remove('--')
+    for x in range(args.pytest_args.count('--')):
+        args.pytest_args.remove('--')
 
     if args.config:
         parser.load_config_file(os.path.abspath(args.config))
@@ -112,17 +104,16 @@ def run():
 
     update_obj(config, args)
 
-    if config.timetag:
-        logcapture.LogCapture.logformat = '%(asctime)s [%(levelcapital)s] %(message)s'
+    pytest_opts = ['-p', 'no:terminalreporter']
+    extra_plugins = [_PregoReporter(verbose=bool(config.verbosity))]
 
     if config.verbosity:
-        args.nose += ['--nologcapture', '--quiet']
+        pytest_opts += ['-p', 'no:logging', '--capture=no']
 
         if config.verbosity == 1:
             loglevel = logging.INFO
         elif config.verbosity >= 2:
             loglevel = logging.DEBUG
-            args.nose += ['--nocapture']
 
         if config.verbosity > 2:
             config.stderr = config.stdout = True
@@ -138,4 +129,4 @@ def run():
         logging.warning("Option -f/--force-color is deprecated")
         sys.exit(1)
 
-    nose.main(argv=['dummy'] + args.nose)
+    sys.exit(pytest.main(pytest_opts + args.pytest_args, plugins=extra_plugins))

@@ -1,4 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 
 import os
 import filecmp
@@ -64,7 +63,7 @@ class File(Printable):
         return File(fd.name, fd)
 
     def read(self):
-        with open(self.path) as fd:
+        with open(self.path, errors='replace') as fd:
             return fd.read()
 
     def readline(self):

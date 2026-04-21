@@ -1,9 +1,8 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 '''
 Debian related assertion
 '''
 
-from six import BytesIO
+from io import BytesIO
 
 from commodity.type_ import checked_type
 from commodity.os_ import SubProcess, DEVNULL

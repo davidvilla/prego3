@@ -1,4 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 
 import sys
 import os
@@ -9,7 +8,6 @@ import logging
 
 import configobj
 import validate
-import six
 import io
 
 from commodity.log import CapitalLoggingFormatter
@@ -18,10 +16,7 @@ from commodity.pattern import Bunch
 from . import gvars
 from .const import PREGO_TMP_BASE, PREGO_TMP, term, PREGO_SPECS
 
-if six.PY2:
-    file_types = file, io.IOBase
-else:
-    file_types = (io.IOBase,)
+file_types = (io.IOBase,)
 
 basedir = os.getcwd()
 
@@ -54,7 +49,7 @@ class Interpolator(object):
             ))
 
     def apply(self, text):
-        if not isinstance(text, six.string_types):
+        if not isinstance(text, str):
             return text
 
         return string.Template(text).safe_substitute(self.vars)
@@ -127,10 +122,6 @@ def load_default_config(dest):
 
 def set_testpath():
     def is_test_caller(frame):
-        current = "{0.major}.{0.minor}".format(sys.version_info)
-        if current in ['3.5', '3.6', '3.7']:
-            return frame[3] == 'testMethod()'
-
         return frame[2] == '_callTestMethod'
 
     if gvars.testpath is None:

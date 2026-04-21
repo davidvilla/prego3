@@ -1,4 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 
 import os
 import pwd
@@ -11,10 +10,7 @@ import blessings
 
 
 from commodity.os_ import resolve_path
-if sys.version_info < (3, 2):
-    from commodity.pattern import memoized as cache
-else:
-    from functools import cache
+from functools import cache
 
 from . import config
 
@@ -60,6 +56,9 @@ CWD_CONFIG = os.path.join(os.getcwd(), '.prego')
 
 @cache
 def term():
+    if not config.color:
+        import io
+        return blessings.Terminal(stream=io.StringIO())
     return blessings.Terminal(force_styling=config.force_color)
 
 

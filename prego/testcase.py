@@ -1,4 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 
 import sys
 import logging
@@ -21,7 +20,7 @@ class PregoTestCase(object):
         self.methodname = methodname
         self.status = Status.NOEXEC
 
-        self.name = "%s:%s.%s" % (child_relpath(testpath), testcase.__class__.__name__, methodname)
+        self.name = "%s.%s" % (testcase.__class__.__name__, methodname)
         self.log = logging.getLogger(self.name)
         self.log.setLevel(logging.INFO)
         self.log.addFilter(StatusFilter(self))
@@ -29,7 +28,7 @@ class PregoTestCase(object):
 
     def commit(self):
         self.status = Status.UNKNOWN
-        self.log.info(Status.indent('=') + term().reverse(' INI ') + ' $name')
+        self.log.info(Status.indent('-') + ' $name BEGIN')
         try:
             Runner(gvars.tasks).run()
             self.status = Status.OK
@@ -40,7 +39,7 @@ class PregoTestCase(object):
             self.status = Status.ERROR
             raise
         finally:
-            self.log.info('$status ' + term().reverse(' END ') + ' $name')
+            self.log.info('$status  $name END')
             init()
 
 # patched unittest.case.TestCase (Python-3.12.8)

@@ -1,9 +1,8 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 import sys
 
 import os
 from unittest import TestCase
-from six import BytesIO
+from io import BytesIO
 from signal import SIGINT
 
 import hamcrest

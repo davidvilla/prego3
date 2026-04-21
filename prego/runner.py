@@ -1,6 +1,4 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 
-import sys
 import os
 import logging
 
@@ -12,13 +10,6 @@ from .tools import set_testpath
 
 log = logging.getLogger('prego')
 
-
-if sys.version_info >= (3, 9):
-    def thread_alive(t):
-        return t.is_alive()
-else:
-    def thread_alive(t):
-        return t.isAlive()
 
 
 class Runner(object):
@@ -80,7 +71,7 @@ class Runner(object):
                 raise TestFailed(t)
 
     def get_unfinished_tasks(self):
-        return [t for t in self.tasks if t.thread and thread_alive(t.thread)]
+        return [t for t in self.tasks if t.thread and t.thread.is_alive()]
 
 
 def commit(logger=None):
