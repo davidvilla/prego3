@@ -1,4 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
 
 import sys
 sys.path.insert(0, '.')

@@ -1,5 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
-
 import hamcrest
 from prego import Task, TestCase, context as ctx, running
 from prego.net import localhost, listen_port
