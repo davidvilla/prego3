@@ -1,9 +1,8 @@
 #!/usr/bin/make -f
-# -*- mode:makefile -*-
 
 .PHONY: test
 test:
-	nosetests3 test
+	pytest test
 
 pypi-release:
 	$(RM) -r dist

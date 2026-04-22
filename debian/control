@@ -2,7 +2,7 @@ Source: prego3
 Section: python
 Priority: optional
 Maintainer: David Villa Alises <David.Villa@gmail.com>
-Homepage: https://bitbucket.org/DavidVilla/prego3
+Homepage: https://github.com/davidvilla/prego3
 Build-Depends: debhelper (>= 9), python3, python3-hatchling, python3-doublex, dh-python, debhelper-compat (= 13)
 Standards-Version: 4.7.0
 

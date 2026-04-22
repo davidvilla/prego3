@@ -13,14 +13,17 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "blessings>=1.7",
-    "commodity>=0.20220422",
+    "commodity>=0.20260422",
     "configobj>=5.0.9",
     "pyhamcrest>=2.1.0",
     "pytest>=9.0.3",
 ]
 
 [project.scripts]
-prego3 = "prego:run"
+prego = "prego:run"
+
+[project.entry-points.pytest11]
+prego = "prego.plugin"
 
 [dependency-groups]
 dev = [
