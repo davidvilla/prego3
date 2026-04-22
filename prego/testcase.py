@@ -27,14 +27,15 @@ class PregoTestCase(object):
         init()
 
     def commit(self):
+        __tracebackhide__ = True
         self.status = Status.UNKNOWN
         self.log.info(Status.indent('-') + ' $name BEGIN')
         try:
             Runner(gvars.tasks).run()
             self.status = Status.OK
-        except TestFailed as test_failed:
+        except TestFailed:
             self.status = Status.FAIL
-            raise test_failed  # shrink traceback
+            raise
         except Exception:
             self.status = Status.ERROR
             raise
@@ -51,10 +52,12 @@ class TestCase(unittest.TestCase):
         unittest.TestCase._callSetUp(self)
 
     def _callTestMethod(self, method):
+        __tracebackhide__ = True
         method()
         self.prego_case.commit()
 
     def run(self, result=None):
+        __tracebackhide__ = True
         if result is None:
             result = self.defaultTestResult()
             startTestRun = getattr(result, 'startTestRun', None)
@@ -125,6 +128,7 @@ class _Outcome(unittest.case._Outcome):
 
     @contextlib.contextmanager
     def testPartExecutor(self, test_case, subTest=False):
+        __tracebackhide__ = True
         old_success = self.success
         self.success = True
         try:
@@ -139,10 +143,6 @@ class _Outcome(unittest.case._Outcome):
         except:
             exc_info = list(sys.exc_info())
 
-            ## begin prego patch
-            if exc_info[0] == TestFailed:
-                exc_info[2] = None  # remove traceback
-            ## end prego patch
 
             if self.expecting_failure:
                 self.expectedFailure = exc_info

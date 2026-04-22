@@ -19,6 +19,7 @@ class Runner(object):
         self.tasks = tasks
 
     def run(self):
+        __tracebackhide__ = True
         if not self.tasks:
             return
 
@@ -66,6 +67,7 @@ class Runner(object):
             pass
 
     def report_tasks(self):
+        __tracebackhide__ = True
         for t in self.tasks:
             if t.status != Status.OK:
                 raise TestFailed(t)
@@ -79,10 +81,9 @@ def commit(logger=None):
     try:
         Runner(gvars.tasks).run()
         result = Status.OK
-    except TestFailed as test_failure:
+    except TestFailed:
         result = Status.FAIL
-        # shrink trackeback
-        raise test_failure
+        raise
     except Exception:
         result = Status.ERROR
         raise
