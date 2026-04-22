@@ -1,11 +1,10 @@
-# -*- mode: python3; coding: utf-8 -*-
-
 from hamcrest import contains_string
 from prego import TestCase, Task, context as ctx
 
 code = """
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 int
 main(int argc, char *argv[]) {

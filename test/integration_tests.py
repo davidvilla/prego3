@@ -5,7 +5,7 @@ from hamcrest.library.text.stringcontainsinorder import *
 from prego import TestCase, Task, File, exists
 from prego.shell import Variable
 
-pytest_run = 'pytest -c /dev/null'
+pytest_run = 'pytest -c /dev/null --log-level=INFO'
 prego_cmd = 'bin/prego3 -p -c /dev/null %s'
 
 
@@ -39,7 +39,7 @@ class KeepGoingTests(TestCase):
     def test_keep_going_off(self):
         task = Task()
         cmd = task.command(
-            prego_cmd % 'examples/examples.py::Test::test_cmd_wrong_true_and_ls',
+            prego_cmd % '-vv examples/examples.py::Test::test_cmd_wrong_true_and_ls',
             expected=1)
 
         strings = [
@@ -50,12 +50,12 @@ class KeepGoingTests(TestCase):
             ]
 
         for s in strings:
-            task.assert_that(cmd.stdout.content, contains_string(s))
+            task.assert_that(cmd.stderr.content, contains_string(s))
 
     def test_keep_going_on(self):
         task = Task()
         cmd = task.command(
-            prego_cmd % '--keep-going examples/examples.py::Test::test_cmd_wrong_true_and_ls',
+            prego_cmd % '-vv --keep-going examples/examples.py::Test::test_cmd_wrong_true_and_ls',
             expected=1)
 
         strings = [
@@ -68,7 +68,7 @@ class KeepGoingTests(TestCase):
             ]
 
         for s in strings:
-            task.assert_that(cmd.stdout.content, contains_string(s))
+            task.assert_that(cmd.stderr.content, contains_string(s))
 
 
 class GeneratingCommands(TestCase):
