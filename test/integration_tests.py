@@ -6,7 +6,7 @@ from prego import TestCase, Task, File, exists
 from prego.shell import Variable
 
 pytest_run = 'pytest -c /dev/null --log-level=INFO'
-prego_cmd = 'bin/prego3 -p -c /dev/null %s'
+prego_cmd = 'bin/prego -p -c /dev/null %s'
 
 
 class LogTests(TestCase):
@@ -15,24 +15,22 @@ class LogTests(TestCase):
         cmd = task.command(pytest_run + ' examples/examples.py::Test::test_cmd_wrong_true_and_ls',
                            expected=1)
         strings = [
-            "TestFailed: assert that command A.0 expected returncode 0, but was 127",
-            "Captured log call",
+            "assert that command A.0 expected returncode 0, but was 127",
             "[FAIL]   A   Task end - elapsed:"]
 
         for s in strings:
-            task.assert_that(cmd.stdout.content, contains_string(s))
+            task.assert_that(cmd.stderr.content, contains_string(s))
 
     def test_show_log_on_fail_command(self):
         task = Task(desc='fail')
         cmd = task.command(pytest_run + ' examples/examples.py::Test::test_cmd_false_true',
                            expected=1)
         strings = [
-            "TestFailed: assert that command A.0 expected returncode 0, but was 1",
-            "Captured log call",
+            "assert that command A.0 expected returncode 0, but was 1",
             "[FAIL]   A   Task end - elapsed:"]
 
         for s in strings:
-            task.assert_that(cmd.stdout.content, contains_string(s))
+            task.assert_that(cmd.stderr.content, contains_string(s))
 
 
 class KeepGoingTests(TestCase):

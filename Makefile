@@ -2,7 +2,7 @@
 
 .PHONY: test
 test:
-	pytest test
+	uv run pytest test
 
 pypi-release:
 	$(RM) -r dist

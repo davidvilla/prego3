@@ -22,9 +22,6 @@ dependencies = [
 [project.scripts]
 prego = "prego:run"
 
-[project.entry-points.pytest11]
-prego = "prego.plugin"
-
 [dependency-groups]
 dev = [
     "doublex>=1.9.6.1",

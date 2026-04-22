@@ -36,14 +36,15 @@ class _BufferingHandler(logging.Handler):
 
 class _PregoReporter:
     def __init__(self, verbose=False):
-        const.term.cache_clear()
-        const.term()  # pre-warm before pytest capture redirects stdout
         self._verbose = verbose
         self._start = None
         self._passed = 0
         self._failed = 0
         self._n_results = 0
         if not verbose:
+            const.term.cache_clear()
+            const.term()
+            logging.getLogger().setLevel(logging.INFO)
             self._log_buffer = _BufferingHandler()
             logging.getLogger().addHandler(self._log_buffer)
 
