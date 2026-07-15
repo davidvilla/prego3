@@ -5,7 +5,7 @@ import string
 from functools import cache
 from importlib.resources import files
 
-import blessings
+import blessed
 
 from . import config
 
@@ -26,8 +26,8 @@ CWD_CONFIG = os.path.join(os.getcwd(), '.prego')
 def term():
     if not config.color:
         import io
-        return blessings.Terminal(stream=io.StringIO())
-    return blessings.Terminal(force_styling=config.force_color)
+        return blessed.Terminal(stream=io.StringIO())
+    return blessed.Terminal(force_styling=config.force_color)
 
 
 class Status:

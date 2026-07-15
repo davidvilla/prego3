@@ -293,7 +293,8 @@ class RanForTime(Matcher):
         return hamcrest.is_(self.expected).matches(cmd.elapsed())
 
     def describe_to(self, description):
-        description.append_text("execution time %ss" % (self.expected))
+        expected_str = str(self.expected).replace("a value ", "was ")
+        description.append_text("execution time %ss" % expected_str)
 
     def describe_mismatch(self, cmd, mismatch_description):
         mismatch_description.append_text('was %.2fs' % self.cmd.elapsed())

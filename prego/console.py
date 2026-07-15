@@ -37,7 +37,7 @@ class _BufferingHandler(logging.Handler):
 class _PregoReporter:
     def __init__(self, verbose=False):
         self._verbose = verbose
-        self._start = None
+        self._start = time.time()
         self._passed = 0
         self._failed = 0
         self._n_results = 0

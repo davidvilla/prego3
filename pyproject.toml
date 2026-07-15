@@ -12,7 +12,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "blessings>=1.7",
+    "blessed>=1.17",
     "commodity>=0.20260422",
     "configobj>=5.0.9",
     "pyhamcrest>=2.1.0",
@@ -21,6 +21,9 @@ dependencies = [
 
 [project.scripts]
 prego = "prego:run"
+
+[project.entry-points."pytest11"]
+prego = "prego.plugin"
 
 [dependency-groups]
 dev = [
