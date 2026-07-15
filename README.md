@@ -158,9 +158,9 @@ Available interpolation variables are:
             client.command('ncat -c "echo bye" localhost $port')
 
 
-This test may be executed using nosetest::
+This test may be executed using pytest::
 
-    $ nosetests examples/netcat.py
+    $ pytest examples/netcat.py
     .
     ----------------------------------------------------------------------
     Ran 1 test in 1.414s
@@ -171,12 +171,12 @@ This test may be executed using nosetest::
 But prego provides a wrapper (the ``prego`` command) that has some interesting options:
 
     $ prego -h
-    usage: prego [-h] [-c FILE] [-k] [-d] [-o] [-e] [-v] [-p] ...
+    usage: prego [-h] [-c FILE] [-k] [-d] [-o] [-e] [-t] [-v] [-p] ...
 
     positional arguments:
-      nose-args
+      pytest-args
 
-    optional arguments:
+    options:
       -h, --help            show this help message and exit
       -c FILE, --config FILE
                             explicit config file
@@ -184,7 +184,9 @@ But prego provides a wrapper (the ``prego`` command) that has some interesting o
       -d, --dirty           do not remove generated files
       -o, --stdout          print tests stdout
       -e, --stderr          print tests stderr
+      -t, --time-tag        Include time info in logs
       -v, --verbose         increase log verbosity
+      -p, --plain           avoid colors and styling in output
 
 
 Same ncat test invoking ``prego``:

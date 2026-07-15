@@ -8,9 +8,9 @@ Standards-Version: 4.7.0
 
 Package: python3-prego
 Architecture: all
-Depends: ${misc:Depends}, psmisc, ${python3:Depends}, python3-hamcrest, python3-blessed, python3-commodity (>= 0.20181024), python3-nose (>= 1.3)
+Depends: ${misc:Depends}, psmisc, ${python3:Depends}, python3-hamcrest, python3-blessed, python3-commodity (>= 0.20181024), python3-pytest
 Description: system test framework based on Python3 test cases
- Prego is a python2 library consisting on a set of classes and hamcrest matchers
+ Prego is a Python3 library consisting on a set of classes and hamcrest matchers
  useful  to specify shell command interactions through files, environment
  variables, network ports. It provides support to run shell commands on
  background, send  signal to processes, set assertions on command stdout or

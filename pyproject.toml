@@ -7,8 +7,8 @@ packages = ["prego"]
 
 [project]
 name = "prego3"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.20260422"
+description = "System test framework based on Python3 test cases"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

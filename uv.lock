@@ -99,7 +99,7 @@ wheels = [
 
 [[package]]
 name = "prego3"
-version = "0.1.0"
+version = "0.20260422"
 source = { editable = "." }
 dependencies = [
     { name = "blessed" },
