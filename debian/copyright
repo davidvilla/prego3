@@ -1,29 +1,17 @@
-This work was packaged for Debian by:
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: prego3
+Upstream-Contact: David Villa <David.Villa@gmail.com>
+Source: https://github.com/davidvilla/prego3
 
-    David Villa Alises <David.Villa@gmail.com> on Tue, 11 Dec 2012 21:25:08 +0100
+Files: *
+Copyright: 2011-2026 David Villa <David.Villa@gmail.com>
+License: GPL-3
 
-It was downloaded from:
+Files: debian/*
+Copyright: 2012-2026 David Villa Alises <David.Villa@gmail.com>
+License: GPL-3
 
-    http://bitbucket.org/arco_group/prego
-
-Upstream Author:
-
-    David Villa <David.Villa@gmail.com> and others
-
-Copyright:
-
-    Copyright (C) 2011, 2012 David Villa <David.Villa@gmail.com>
-
-
-License:
-
-
-
-The Debian packaging is:
-
-    Copyright (C) 2012 David Villa Alises <David.Villa@gmail.es>
-
-and is licensed under the GPL version 3, see above.
-
-On Debian systems, the complete text of the BSD can be found in
-`/usr/share/common-licenses/GPL-3'.
+License: GPL-3
+ On Debian systems, the complete text of the GNU General
+ Public License version 3 can be found in
+ "/usr/share/common-licenses/GPL-3".

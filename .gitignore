@@ -7,9 +7,11 @@ dist
 debian/*.log
 .pc
 debian/python3-prego*
+!debian/python3-prego.manpages
+!debian/python3-prego.examples
 debian/files
 debian/.debhelper/generated/python3-prego/installed-by-dh_installdocs
-venv/
+.venv/
 .vscode/.ropeproject/
 debian/debhelper-build-stamp
 debian/.debhelper

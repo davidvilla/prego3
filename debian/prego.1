@@ -1,0 +1,48 @@
+.TH PREGO 1 "2026" "prego3" "User Commands"
+.SH NAME
+prego \- system test framework based on Python3 test cases
+.SH SYNOPSIS
+.B prego
+[\fIOPTIONS\fR] [\fIPYTEST\-ARGS\fR]
+.SH DESCRIPTION
+.B prego
+is a Python3 library and pytest plugin consisting of a set of classes and
+hamcrest matchers useful to specify shell command interactions through
+files, environment variables and network ports. It provides support to
+run shell commands in the background, send signals to processes, and set
+assertions on command stdout or stderr, among other things.
+.PP
+The
+.B prego
+command runs the test suite in the current directory using pytest,
+with a reporter tailored to prego test cases. Any trailing arguments are
+passed through to pytest.
+.SH OPTIONS
+.TP
+.BR \-c ", " \-\-config " \fIFILE\fR"
+explicit config file
+.TP
+.BR \-k ", " \-\-keep\-going
+continue even with failed assertion or tests
+.TP
+.BR \-d ", " \-\-dirty
+do not remove generated files
+.TP
+.BR \-o ", " \-\-stdout
+print tests stdout
+.TP
+.BR \-e ", " \-\-stderr
+print tests stderr
+.TP
+.BR \-t ", " \-\-time\-tag
+include time info in logs
+.TP
+.BR \-v ", " \-\-verbose
+increase log verbosity (repeatable)
+.TP
+.BR \-p ", " \-\-plain
+avoid colors and styling in output
+.SH SEE ALSO
+.BR pytest (1)
+.SH AUTHOR
+David Villa Alises <David.Villa@gmail.com>
