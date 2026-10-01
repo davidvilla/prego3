@@ -1,6 +1,7 @@
 import sys
 
 import os
+import unittest
 from unittest import TestCase
 from io import BytesIO
 from signal import SIGINT
@@ -413,6 +414,20 @@ class PregoCase(prego.TestCase):
     def task_simple(self):
         task = prego.Task()
         task.command('echo hi')
+
+
+class SkippedPregoCase(TestCase):
+    def test_skip_decorator(self):
+        class Sample(prego.TestCase):
+            @unittest.skip("not now")
+            def test_skipped(self):
+                prego.Task().command('false')
+
+        result = unittest.TestResult()
+        Sample('test_skipped').run(result)
+
+        self.assertEqual(len(result.skipped), 1)
+        self.assertEqual(result.failures + result.errors, [])
 
 # class sync_wait_that_tests(TestCase):
 #     def setUp(self):
