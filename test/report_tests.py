@@ -24,6 +24,43 @@ class TestOutOptions(TestCase):
                          is_not(contains_string("A.3.err| STDERR")))
 
 
+class TestBeginEnd(TestCase):
+    def test_begin_uses_pytest_nodeid(self):
+        task = Task()
+        task.command('bin/prego -pv examples/skip.py::Skip::test_ok', expected=0)
+        task.assert_that(task.lastcmd.stderr.content,
+                         contains_string("------  BEGIN examples/skip.py::Skip::test_ok"))
+
+    def test_end_reports_ok_status(self):
+        task = Task()
+        task.command('bin/prego -pv examples/skip.py::Skip::test_ok', expected=0)
+        task.assert_that(task.lastcmd.stderr.content,
+                         contains_string("[ OK ]  END   examples/skip.py::Skip::test_ok"))
+
+    def test_end_reports_fail_status(self):
+        task = Task()
+        task.command('bin/prego -pv examples/examples.py::Test::test_cmd_false_true', expected=1)
+        task.assert_that(task.lastcmd.stderr.content,
+                         contains_string("[FAIL]  END   examples/examples.py::Test::test_cmd_false_true"))
+
+    def test_begin_end_not_shown_on_pass_without_verbose(self):
+        task = Task()
+        task.command('bin/prego -p examples/skip.py::Skip::test_ok', expected=0)
+        task.assert_that(task.lastcmd.stderr.content, is_not(contains_string("BEGIN")))
+        task.assert_that(task.lastcmd.stderr.content, is_not(contains_string("END")))
+
+    def test_summary_on_pass(self):
+        task = Task()
+        task.command('bin/prego -p examples/skip.py::Skip::test_ok', expected=0)
+        task.assert_that(task.lastcmd.stderr.content, contains_string("Ran 1 test in"))
+        task.assert_that(task.lastcmd.stderr.content, contains_string("\nOK\n"))
+
+    def test_summary_on_fail(self):
+        task = Task()
+        task.command('bin/prego -p examples/examples.py::Test::test_cmd_false_true', expected=1)
+        task.assert_that(task.lastcmd.stderr.content, contains_string("FAILED (failures=1)"))
+
+
 class TestSkip(TestCase):
     def test_skipped_tests_are_reported(self):
         task = Task()
