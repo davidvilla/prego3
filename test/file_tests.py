@@ -1,5 +1,3 @@
-# -*- coding: utf-8; mode: python -*-
-
 from unittest import TestCase
 import hamcrest
 

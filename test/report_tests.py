@@ -1,5 +1,3 @@
-# -*- mode:python; coding:utf-8; tab-width:4 -*-
-
 from hamcrest import contains_string, is_not
 from prego import TestCase, Task
 

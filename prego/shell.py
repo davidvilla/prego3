@@ -1,5 +1,3 @@
-# -*- mode:python; coding:utf-8; tab-width:4 -*-
-
 import os
 from commodity.str_ import Printable
 
