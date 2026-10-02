@@ -191,7 +191,7 @@ But prego provides a wrapper (the ``prego`` command) that has some interesting o
 
 Same ncat test invoking ``prego``:
 
-    [II] ------  Net.test_netcat BEGIN
+    [II] ------  BEGIN examples/netcat.py::Net::test_netcat
     [II] [ ok ]   B.0 wait that A is running
     [II] [ ok ]   A.0 assert that nmap package is installed
     [II] [ ok ]   A.1 assert that localhost not port 2000/tcp to be open
@@ -207,7 +207,7 @@ Same ncat test invoking ``prego``:
     [II] [ ok ]   A.4 assert that command A.2 execution time to be a value less than <5>s
     [II] [ ok ]   A.5 assert that File '/tmp/prego-david/26245/A.2.out' content a string containing 'bye'
     [II] [ OK ]   A   Task end - elapsed: 1.32s
-    [II] [ OK ]  Net.test_netcat END
+    [II] [ OK ]  END   examples/netcat.py::Net::test_netcat
     ----------------------------------------------------------------------
     Ran 1 test in 1.396s
 

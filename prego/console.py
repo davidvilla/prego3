@@ -1,5 +1,3 @@
-# -*- coding:utf-8; tab-width:4; mode:python -*-
-
 import sys
 import os
 import time
@@ -14,12 +12,23 @@ from commodity.log import NullHandler, CapitalLoggingFormatter
 from commodity.args import parser, add_argument, args
 
 from . import config
+from . import gvars
 from .tools import set_logger_default_formatter, StatusFilter, update_obj
 from . import const
+from .const import Status
+
+log = logging.getLogger('prego')
 
 logging.getLogger().addFilter(StatusFilter())
 
 _PREGO_LOG_FORMAT = '%(levelcapital)s. %(message)s'
+
+
+def _skip_reason(report):
+    longrepr = report.longrepr
+    if isinstance(longrepr, (tuple, list)) and len(longrepr) == 3:
+        return longrepr[2]
+    return str(longrepr)
 
 
 class _BufferingHandler(logging.Handler):
@@ -40,6 +49,7 @@ class _PregoReporter:
         self._start = time.time()
         self._passed = 0
         self._failed = 0
+        self._skipped = 0
         self._n_results = 0
         if not verbose:
             const.term.cache_clear()
@@ -68,11 +78,23 @@ class _PregoReporter:
 
     @pytest.hookimpl
     def pytest_runtest_setup(self, item):
+        gvars.current_nodeid = item.nodeid
         if not self._verbose:
             self._log_buffer.clear()
 
     @pytest.hookimpl
     def pytest_runtest_logreport(self, report):
+        if report.skipped and report.when in ('setup', 'call'):
+            self._skipped += 1
+            if not self._verbose:
+                self._log_buffer.clear()
+                print('s', end='', file=sys.stderr, flush=True)
+                self._n_results += 1
+            else:
+                log.info('%s SKIP  %s (%s)', Status.indent('-'),
+                          report.nodeid, _skip_reason(report))
+            return
+
         if report.when == 'call':
             if report.passed:
                 self._passed += 1
@@ -91,14 +113,17 @@ class _PregoReporter:
         if not self._verbose:
             logging.getLogger().removeHandler(self._log_buffer)
         elapsed = time.time() - self._start
-        total = self._passed + self._failed
+        total = self._passed + self._failed + self._skipped
         if not self._verbose and self._n_results:
             print(file=sys.stderr)
         noun = 'test' if total == 1 else 'tests'
         print('-' * 70, file=sys.stderr)
         print(f'Ran {total} {noun} in {elapsed:.3f}s', file=sys.stderr)
         if self._failed:
-            print(f'\nFAILED (failures={self._failed})', file=sys.stderr)
+            extra = f', skipped={self._skipped}' if self._skipped else ''
+            print(f'\nFAILED (failures={self._failed}{extra})', file=sys.stderr)
+        elif self._skipped:
+            print(f'\nOK (skipped={self._skipped})', file=sys.stderr)
         else:
             print('\nOK', file=sys.stderr)
 

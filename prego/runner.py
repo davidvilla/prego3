@@ -76,7 +76,10 @@ class Runner(object):
         return [t for t in self.tasks if t.thread and t.thread.is_alive()]
 
 
-def commit(logger=None):
+def commit():
+    __tracebackhide__ = True
+    nodeid = gvars.current_nodeid
+    log.info('%s BEGIN %s', Status.indent('-'), nodeid)
     result = Status.UNKNOWN
     try:
         Runner(gvars.tasks).run()
@@ -88,8 +91,7 @@ def commit(logger=None):
         result = Status.ERROR
         raise
     finally:
-        if logger:
-            logger.info('%s END', result.pretty())
+        log.info('%s  END   %s', result.pretty(), nodeid)
         init()
 
 
